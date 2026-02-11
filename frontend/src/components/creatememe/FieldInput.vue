@@ -13,7 +13,7 @@
 const props = defineProps({
     label: { type: String, default: '' },
     placeholder: { type: String, default: '' },
-    modelValue: { type: String, default: '' }  // v-model 关键
+    modelValue: { type: String, default: '' }  // v-model key
 })
 
 const emit = defineEmits(['update:modelValue'])

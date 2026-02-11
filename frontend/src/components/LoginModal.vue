@@ -4,93 +4,93 @@
       <div class="login-container">
         <button class="close-button" @click="closeModal">×</button>
 
-        <!-- 登录表单 -->
+        <!-- Login Form -->
         <div v-if="isLogin">
           <div class="form-header">
-            <h2>用户登录</h2>
-            <p>欢迎回来，请登录您的账号</p>
+            <h2>User Login</h2>
+            <p>Welcome back, please login to your account</p>
           </div>
 
           <form @submit.prevent="handleLogin" class="floating-form">
             <div class="input-group">
               <input id="loginUsername" v-model="loginForm.username" type="text" required />
-              <label for="loginUsername">用户名</label>
+              <label for="loginUsername">Username</label>
             </div>
             <div class="input-group">
               <input id="loginPassword" v-model="loginForm.password" type="password" required />
-              <label for="loginPassword">密码</label>
+              <label for="loginPassword">Password</label>
             </div>
-            <button type="submit" class="submit-btn">登录</button>
+            <button type="submit" class="submit-btn">Login</button>
 
             <div class="form-footer">
-              <span>还没有账号？</span>
-              <a href="javascript:;" @click.prevent="switchForm">立即注册</a>
+              <span>Don't have an account?</span>
+              <a href="javascript:;" @click.prevent="switchForm">Register Now</a>
             </div>
           </form>
         </div>
 
-        <!-- 注册表单 -->
+        <!-- Register Form -->
         <div v-else>
           <div class="form-header">
-            <h2 v-if="!isAuditor">创建普通用户账号</h2>
-            <h2 v-else>创建审核员账号</h2>
-            <p>开启您的美好旅程</p>
+            <h2 v-if="!isAuditor">Create Regular User Account</h2>
+            <h2 v-else>Create Reviewer Account</h2>
+            <p>Start your wonderful journey</p>
           </div>
 
           <form @submit.prevent="handleRegister" class="floating-form">
             <div class="input-group">
               <input id="regUsername" v-model="registerForm.username" type="text" required />
-              <label for="regUsername">用户名</label>
+              <label for="regUsername">Username</label>
             </div>
 
             <div class="input-group">
               <input id="regPassword" v-model="registerForm.password" type="password" required />
-              <label for="regPassword">密码</label>
+              <label for="regPassword">Password</label>
             </div>
 
-            <!-- 新增邀请码输入框，仅在审核员注册时显示 -->
+            <!-- Invitation code input, only shown for reviewer registration -->
             <div class="input-group" v-if="isAuditor">
               <input id="invitationCode" v-model="registerForm.invitationCode" type="text" required />
-              <label for="invitationCode">邀请码</label>
+              <label for="invitationCode">Invitation Code</label>
             </div>
 
             <button type="submit" class="submit-btn">
-              {{ isAuditor ? '注册为审核员' : '立即注册' }}
+              {{ isAuditor ? 'Register as Reviewer' : 'Register Now' }}
             </button>
 
             <div class="form-footer">
-              <span>已有账号？</span>
-              <a href="javascript:;" @click.prevent="switchForm">立即登录</a>
+              <span>Already have an account?</span>
+              <a href="javascript:;" @click.prevent="switchForm">Login Now</a>
             </div>
 
-            <!-- 审核员注册提示 -->
+            <!-- Reviewer registration prompt -->
             <div class="auditor-register" v-if="!isAuditor">
-              <span>点这里注册为审核员，需要邀请码：</span>
-              <a href="javascript:;" @click.prevent="registerAsAuditor">注册为审核员</a>
+              <span>Click here to register as reviewer, invitation code required:</span>
+              <a href="javascript:;" @click.prevent="registerAsAuditor">Register as Reviewer</a>
             </div>
 
-            <!-- 普通用户注册提示 -->
+            <!-- Regular user registration prompt -->
             <div class="auditor-register" v-if="isAuditor">
-              <span>点这里注册为普通用户：</span>
-              <a href="javascript:;" @click.prevent="registerAsNormer">注册为普通用户</a>
+              <span>Click here to register as regular user:</span>
+              <a href="javascript:;" @click.prevent="registerAsNormer">Register as Regular User</a>
             </div>
           </form>
         </div>
         
-        <!-- 错误提示 -->
+        <!-- Error messages -->
         <div
           v-if="registerForm.username && !isUsernameValid"
           class="error-message"
           :class="{ shake: isShaking }"
         >
-          用户名必须为7到18个字符，包含大小写字母、数字，不能包含其他符号！
+          Username must be 7-18 characters, containing uppercase and lowercase letters and numbers, no other symbols!
         </div>
         <div
           v-else-if="registerForm.password && !isPasswordValid"
           class="error-message"
           :class="{ shake: isShaking }"
         >
-          密码必须为8到15个字符，包含大小写字母、数字和有效（-_*^#）符号！
+          Password must be 8-15 characters, containing uppercase and lowercase letters, numbers and valid (-_*^#) symbols!
         </div>
 
         <div class="error-message1" v-else-if="errorMsg">
@@ -105,24 +105,24 @@
 import { ref, reactive, computed, watch, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
-const isAuditor = ref(false) // 是否为审核员注册
+const isAuditor = ref(false) // Whether registering as reviewer
 
-// 实时验证用户名
+// Real-time username validation
 const isUsernameValid = computed(() => usernameRegex.test(registerForm.username));
-// 实时验证密码
+// Real-time password validation
 const isPasswordValid = computed(() => passwordRegex.test(registerForm.password));
 
 import { useAuthStore } from '@/stores/auth';
 const authStore = useAuthStore();
-const server_ip = authStore.server_ip // 后端服务器地址
+const server_ip = authStore.server_ip // Backend server address
 
 const emit = defineEmits(['close'])
 
-const isLogin = ref(true) // true=登录, false=注册
+const isLogin = ref(true) // true=login, false=register
 
-const isShaking = ref(false); // 控制震动动画的状态
+const isShaking = ref(false); // Control shake animation state
 
-// 登录表单
+// Login form
 const loginForm = reactive({
   username: '',
   password: ''
@@ -131,13 +131,13 @@ const errorMsg = ref('')
 
 const isFormValid = ref(false)
 
-// 注册表单
+// Register form
 const registerForm = reactive({
   username: '',
   password: ''
 })
 
-// 🔍监听输入变化清空错误信息
+// 🔍Watch input changes to clear error messages
 watch(
   () => [registerForm.username, registerForm.password],
   () => {
@@ -153,23 +153,23 @@ watch(
   }
 )
 
-// 验证登录表单
+// Validate login form
 const validateInput = () => {
   isFormValid.value = loginForm.username && loginForm.password
   if (isFormValid.value) errorMsg.value = ''
 }
 
-// 默认头像URL
+// Default avatar URL
 const defaultAvatar = 'https://i.pravatar.cc/150?img=1'
 
-// 用户数据（包含所有信息）
+// User data (including all information)
 const userData = ref({
   avatar: defaultAvatar, // 默认头像
   nickname: '',
   username: '',
 })
 
-// 从后端获取用户数据
+// Fetch user data from backend
 const fetchUserData = async (user_token) => {
   try {    
     const currentUsername = user_token
@@ -179,7 +179,7 @@ const fetchUserData = async (user_token) => {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'token': authStore.username || authStore.token || '', // 传递用户名作为token（后端当前使用用户名作为token）
+        'token': authStore.username || authStore.token || '', // Pass username as token (backend currently uses username as token)
       },
     })
 
@@ -188,27 +188,27 @@ const fetchUserData = async (user_token) => {
       const data = result.data
       console.log("data: ", data)
       userData.value = {
-        avatar: data.avatar || defaultAvatar, // 如果没有头像，使用默认头像
+        avatar: data.avatar || defaultAvatar, // If no avatar, use default avatar
         nickname: data.nickname,
         username: data.username,
       }
     } else {
-      console.error('获取用户信息失败:', result)
+      console.error('Failed to fetch user info:', result)
     }
   } catch (err) {
-    console.error('获取用户信息时发生错误:', err)
+    console.error('Error occurred while fetching user info:', err)
   }
 }
 
-// 登录提交
+// Login submission
 const handleLogin = async () => {
-  // alert('登录成功！');
-  // emit('login-success'); // ✅ 通知父组件登录成功
+  // alert('Login successful!');
+  // emit('login-success'); // ✅ Notify parent component of successful login
   // closeModal();
   // return;
   try {
-    console.log('登录', loginForm)
-    // 登录逻辑，比如发送请求
+    console.log('Login', loginForm)
+    // Login logic, such as sending request
     const response = await fetch(`${server_ip}/api/login`, {
       method: 'POST',
       headers: {
@@ -219,44 +219,44 @@ const handleLogin = async () => {
     const data = await response.json();
     // if (response.ok) {
     if (response.status == 201) {
-      alert('登录成功！');
-      authStore.setToken(data.token); // 设置全局 token
-      authStore.setUserRole(data.user.role); // 保存用户role
-      authStore.setUsername(loginForm.username); // 保存用户名
-      authStore.setUserToken(loginForm.username); // 保存用户token，目前就是用户名
+      alert('Login successful!');
+      authStore.setToken(data.token); // Set global token
+      authStore.setUserRole(data.user.role); // Save user role
+      authStore.setUsername(loginForm.username); // Save username
+      authStore.setUserToken(loginForm.username); // Save user token, currently username
       await fetchUserData(loginForm.username);
-      authStore.setNickname(userData.value.nickname); // 保存昵称
-      authStore.setAvatar(userData.value.avatar); // 保存头像
+      authStore.setNickname(userData.value.nickname); // Save nickname
+      authStore.setAvatar(userData.value.avatar); // Save avatar
 
-      // 保存 token 和登录时间到 localStorage
+      // Save token and login time to localStorage
       localStorage.setItem('auth_token', data.token);
       localStorage.setItem('auth_username', loginForm.username);
       localStorage.setItem('auth_role', data.user.role);
-      localStorage.setItem('login_time', Date.now()); // 保存当前时间戳
+      localStorage.setItem('login_time', Date.now()); // Save current timestamp
 
       // console.log("data.user.role: ", data.user.role)
       console.log("data: ", data)
 
-      emit('login-success', loginForm.username); // ✅ 通知父组件登录成功，传递用户名
+      emit('login-success', loginForm.username); // ✅ Notify parent component of successful login, pass username
       closeModal();
       console.log('Login info:', data);
 
-      // // 登录成功后自动跳转到当前用户的个人主页
+      // // Auto-redirect to current user's profile page after login
       // router.push(`/profile/${loginForm.username}`);
     } else if (response.status == 500){
-      errorMsg.value = '服务器运行错误';
+      errorMsg.value = 'Server error';
     } else {
-      // errorMsg.value = data.message || '用户名或密码错误';
-      errorMsg.value = '用户名或密码错误';
+      // errorMsg.value = data.message || 'Incorrect username or password';
+      errorMsg.value = 'Incorrect username or password';
     }
   } catch (error) {
-    console.error('登录时发生错误:', error);
-    alert('服务器连接失败，请稍后再试！');
+    console.error('Error occurred during login:', error);
+    alert('Server connection failed, please try again later!');
   }
 }
 
-const usernameRegex = /^[a-zA-Z0-9]{7,18}$/; // 用户名正则
-const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[-_*^#])[A-Za-z\d-_*^#]{8,15}$/; // 密码正则
+const usernameRegex = /^[a-zA-Z0-9]{7,18}$/; // Username regex
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[-_*^#])[A-Za-z\d-_*^#]{8,15}$/; // Password regex
 
 const registerAsNormer = async () => {
   isAuditor.value = false
@@ -265,21 +265,21 @@ const registerAsNormer = async () => {
 
 const registerAsAuditor = async () => {
   isAuditor.value = true
-  // 验证用户名和密码
+  // Validate username and password
   if (!isUsernameValid.value || !isPasswordValid.value) {
     triggerShake();
     return;
   }
 
-  // 审核员注册时，邀请码不能为空
+  // Invitation code cannot be empty for reviewer registration
   if (!registerForm.invitationCode) {
-    errorMsg.value = '请输入邀请码';
+    errorMsg.value = 'Please enter invitation code';
     triggerShake();
     return;
   }
 
   try {
-    // 调用审核员注册接口
+    // Call reviewer registration API
     const url = `${server_ip}/api/reviewer/register`;
 
     const bodyData = {
@@ -297,24 +297,24 @@ const registerAsAuditor = async () => {
     const data = await response.json();
 
     if (response.status === 201) {
-      alert('审核员注册成功！');
-      switchForm(); // 切换回登录表单
+      alert('Reviewer registration successful!');
+      switchForm(); // Switch back to login form
     } else if (response.status === 400) {
-      errorMsg.value = '用户名或密码缺失';
+      errorMsg.value = 'Username or password missing';
     } else if (response.status === 403) {
-      errorMsg.value = '邀请码错误';
+      errorMsg.value = 'Invalid invitation code';
     } else {
-      errorMsg.value = '服务器错误';
+      errorMsg.value = 'Server error';
     }
   } catch (error) {
-    console.error('注册时发生错误:', error);
-    alert('服务器连接失败，请稍后再试！');
+    console.error('Error occurred during registration:', error);
+    alert('Server connection failed, please try again later!');
   }
 }
 
-// 注册提交
+// Register submission
 const handleRegister = async () => {
-  // 验证用户名和密码
+  // Validate username and password
   if (!isUsernameValid.value || !isPasswordValid.value) {
     triggerShake();
     return;
@@ -332,29 +332,29 @@ const handleRegister = async () => {
 
     // if (response.ok) {
     if (response.status == 201) {
-      alert('注册成功！');
-      switchForm(); // 切换回登录表单
+      alert('Registration successful!');
+      switchForm(); // Switch back to login form
     } else if (response.status == 400){
-      errorMsg.value = '用户名已被注册';
+      errorMsg.value = 'Username already registered';
     } else {
-      // errorMsg.value = data.message || '用户名或密码错误';
-      errorMsg.value = '服务器错误';
+      // errorMsg.value = data.message || 'Incorrect username or password';
+      errorMsg.value = 'Server error';
     }
   } catch (error) {
-    console.error('注册时发生错误:', error);
-    alert('服务器连接失败，请稍后再试！');
+    console.error('Error occurred during registration:', error);
+    alert('Server connection failed, please try again later!');
   }
 };
 
-// 触发震动动画
+// Trigger shake animation
 const triggerShake = () => {
-  isShaking.value = true; // 开启震动动画
+  isShaking.value = true; // Enable shake animation
   setTimeout(() => {
-    isShaking.value = false; // 0.3 秒后关闭震动动画
+    isShaking.value = false; // Disable shake animation after 0.3 seconds
   }, 300);
 };
 
-// 切换登录/注册表单
+// Switch between login/register forms
 const switchForm = () => {
   isLogin.value = !isLogin.value
   isAuditor.value = false
@@ -365,14 +365,14 @@ const switchForm = () => {
   registerForm.invitationCode = ''
 }
 
-// 关闭弹窗
+// Close modal
 const closeModal = () => emit('close')
 
 onMounted(validateInput)
 </script>
 
 <style scoped>
-/* 背景遮罩 */
+/* Background overlay */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -384,7 +384,7 @@ onMounted(validateInput)
   z-index: 2000;
 }
 
-/* 模态框容器 */
+/* Modal container */
 .modal-container {
   animation: fadeIn 0.35s ease;
   transform: scale(1);
@@ -394,21 +394,21 @@ onMounted(validateInput)
 .login-container {
   width: 500px;
   background: linear-gradient(180deg, #0f0f0f 0%, #1a1a1a 100%);
-  /* 深黑渐变 */
+  /* Deep black gradient */
   border-radius: 20px;
   padding: 40px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
   border: 1px solid rgba(0, 255, 0, 0.4);
-  /* 绿色边框 */
+  /* Green border */
   color: #00ff00;
-  /* 默认字体绿色 */
+  /* Default green font */
   font-family: 'Arial', sans-serif;
-  /* 可换成你喜欢的字体 */
+  /* Can change to your preferred font */
   border: 1px solid rgba(255, 255, 255, 0.5);
-  /* 白色半透明边框 */
+  /* White semi-transparent border */
 }
 
-/* ✨ 右上角关闭按钮 */
+/* ✨ Top-right close button */
 .close-button {
   position: absolute;
   top: 16px;
@@ -428,7 +428,7 @@ onMounted(validateInput)
   transform: rotate(90deg);
 }
 
-/* 标题 */
+/* Title */
 .form-header {
   text-align: center;
   margin-bottom: 40px;
@@ -446,7 +446,7 @@ onMounted(validateInput)
   font-size: 16px;
 }
 
-/* 表单输入 */
+/* Form input */
 .floating-form .input-group {
   position: relative;
   margin-bottom: 30px;
@@ -489,7 +489,7 @@ onMounted(validateInput)
   color: #aceab5;
 }
 
-/* 提交按钮 */
+/* Submit button */
 .submit-btn {
   width: 100%;
   padding: 15px;
@@ -512,7 +512,7 @@ onMounted(validateInput)
   box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
 }
 
-/* 箭头图标 */
+/* Arrow icon */
 .arrow-icon {
   border: solid white;
   border-width: 0 2px 2px 0;
@@ -521,7 +521,7 @@ onMounted(validateInput)
   transform: rotate(-45deg);
 }
 
-/* 底部链接 */
+/* Footer links */
 .form-footer {
   text-align: center;
   margin-top: 20px;
@@ -539,16 +539,16 @@ onMounted(validateInput)
   text-decoration: underline;
 }
 
-/* 错误提示 */
+/* Error message */
 .error-message {
-  position: absolute; /* 绝对定位，脱离文档流 */
-  bottom: 10px; /* 错误提示固定在容器底部 */
-  left: 50%; /* 水平居中 */
-  transform: translateX(-50%); /* 修正水平居中偏移 */
-  color: #f56c6c; /* 错误提示颜色 */
-  font-size: 14px; /* 字体大小 */
-  text-align: center; /* 居中对齐 */
-  white-space: nowrap; /* 防止文字换行 */
+  position: absolute; /* Absolute positioning, removed from document flow */
+  bottom: 10px; /* Error message fixed at container bottom */
+  left: 50%; /* Horizontal center */
+  transform: translateX(-50%); /* Correct horizontal center offset */
+  color: #f56c6c; /* Error message color */
+  font-size: 14px; /* Font size */
+  text-align: center; /* Center alignment */
+  white-space: nowrap; /* Prevent text wrapping */
 }
 
 .error-message1 {
@@ -560,11 +560,11 @@ onMounted(validateInput)
   font-size: 17px;
   text-align: center;
   white-space: nowrap;
-  animation: shake 0.3s ease-in-out; /* 震动动画持续 0.3 秒 */
+  animation: shake 0.3s ease-in-out; /* Shake animation lasts 0.3 seconds */
 }
 
 .error-message.shake {
-  animation: shake 0.3s ease-in-out; /* 震动动画持续 0.3 秒 */
+  animation: shake 0.3s ease-in-out; /* Shake animation lasts 0.3 seconds */
 }
 
 @keyframes shake {
@@ -582,7 +582,7 @@ onMounted(validateInput)
   }
 }
 
-/* 动画 */
+/* Animation */
 @keyframes fadeIn {
   from {
     opacity: 0;

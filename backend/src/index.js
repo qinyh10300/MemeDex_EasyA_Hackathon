@@ -1,4 +1,4 @@
-import 'dotenv/config'; // 必须在最顶部，以确保所有地方都能用到环境变量
+import 'dotenv/config'; // Must be at the top to ensure environment variables are available everywhere
 
 import express, { json } from 'express';
 import cors from 'cors';
@@ -252,10 +252,10 @@ app.post('/api/message/sticker/generate', MessageController.generateSticker);
 app.get('/api/review/pending-meme-list', Review.getPendingMemeList);
 // 审核模因（通过或拒绝）
 app.post('/api/review/meme/:id', Review.reviewMeme);
-// AI 审核
+// AI review
 app.post('/api/review/meme/:id/ai', Review.aiReviewMeme);
 
-// C2C 交易
+// C2C trading
 app.post('/api/c2c/create', C2CController.createC2CTrade);
 app.get('/api/c2c/outgoing', C2CController.getOutgoingTrades);
 app.get('/api/c2c/incoming', C2CController.getIncomingTrades);
@@ -264,11 +264,11 @@ app.post('/api/c2c/:id/accept', C2CController.acceptTrade);
 app.post('/api/c2c/:id/reject', C2CController.rejectTrade);
 app.post('/api/c2c/:id/cancel', C2CController.cancelTrade);
 
-// 消息推送
+// Message push
 
-// 获取用户的全部消息
+// Get all user notifications
 app.get('/api/notifications', Profile.getNotifications);
-// 标记消息为已读
+// Mark notifications as read
 app.post('/api/mark-notification-read', Profile.markNotificationListRead);
 
 // 2. 连接到MongoDB数据库

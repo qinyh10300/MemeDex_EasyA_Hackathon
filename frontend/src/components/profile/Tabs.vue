@@ -12,54 +12,54 @@
       </button>
     </div>
 
-    <!-- Tab 内容 -->
+    <!-- Tab content -->
     <div class="tab-content">
       
 
-      <!-- 创作者数据 -->
-      <template v-if="activeTab === '创作者数据'">
+      <!-- Creator data -->
+      <template v-if="activeTab === 'Creator Data'">
         <div class="creator-dashboard-section">
           <div class="dashboard-header">
-            <h3>📊 创作者数据概览</h3>
-            <router-link to="/creator-dashboard" class="view-all-btn">查看详情 →</router-link>
+            <h3>📊 Creator Data Overview</h3>
+            <router-link to="/creator-dashboard" class="view-all-btn">View Details →</router-link>
           </div>
           <div class="dashboard-stats">
             <div class="stat-card">
               <span class="stat-icon">💰</span>
               <div class="stat-content">
                 <span class="stat-value">${{ creatorStats.totalEarnings?.toFixed(2) || '0.00' }}</span>
-                <span class="stat-label">总收益</span>
+                <span class="stat-label">Total Earnings</span>
               </div>
             </div>
             <div class="stat-card">
               <span class="stat-icon">📈</span>
               <div class="stat-content">
                 <span class="stat-value">{{ creatorStats.totalMemes || 0 }}</span>
-                <span class="stat-label">创建模因</span>
+                <span class="stat-label">Memes Created</span>
               </div>
             </div>
             <div class="stat-card">
               <span class="stat-icon">👥</span>
               <div class="stat-content">
                 <span class="stat-value">{{ creatorStats.totalHolders || 0 }}</span>
-                <span class="stat-label">持有人数</span>
+                <span class="stat-label">Total Holders</span>
               </div>
             </div>
             <div class="stat-card">
               <span class="stat-icon">💎</span>
               <div class="stat-content">
                 <span class="stat-value">${{ formatVolume(creatorStats.totalVolume) }}</span>
-                <span class="stat-label">交易量</span>
+                <span class="stat-label">Trading Volume</span>
               </div>
             </div>
           </div>
           <div class="quick-link-hint">
-            <p>点击"查看详情"获取完整的收益分析、粉丝统计和交易明细</p>
+            <p>Click "View Details" to get complete earnings analysis, fan statistics and transaction details</p>
           </div>
         </div>
       </template>
 
-      <!-- 粉丝 / 关注列表：仅自己可见 -->
+      <!-- Followers / Following list: only visible to self -->
       <template v-else-if="isUserListTab">
         <button
           v-for="user in pagedMemes"
@@ -81,7 +81,7 @@
         </button>
       </template>
 
-      <!-- 模因币列表：显示持仓信息 -->
+      <!-- Meme coin list: display holdings info -->
       <template v-else-if="isTokenTab">
         <div class="token-list">
           <div
@@ -99,25 +99,25 @@
             </div>
             <div class="token-right">
               <div class="token-amount">
-                <span class="amount-label">持有数量</span>
+                <span class="amount-label">Holdings</span>
                 <span class="amount-value">{{ formatNumber(token.amount) }}</span>
               </div>
               <div class="token-value">
-                <span class="value-label">估值</span>
+                <span class="value-label">Valuation</span>
                 <span class="value-number">{{ formatCurrency(token.value) }}</span>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- 空状态 -->
+        <!-- Empty state -->
         <div v-if="pagedMemes.length === 0" class="empty-state">
-          <p>🪙 暂无持有的模因币</p>
-          <p class="empty-hint">去交易页面购买你看好的模因币吧！</p>
+          <p>🪙 No meme coins held yet</p>
+          <p class="empty-hint">Go to the trading page to buy meme coins you're bullish on!</p>
         </div>
       </template>
 
-      <!-- 模因列表：显示模因信息 -->
+      <!-- Meme list: display meme info -->
       <template v-else>
         <div
           v-for="meme in pagedMemes"
@@ -132,26 +132,26 @@
           <img :src="meme.image" alt="meme" class="meme-image" />
           <div class="meme-info">
             <h3 class="meme-name">{{ meme.name }}</h3>
-            <p class="meme-code">代号: {{ meme.code }}</p>
+            <p class="meme-code">Code: {{ meme.code }}</p>
             <p class="meme-desc">{{ meme.description }}</p>
             
-            <div v-if="isOwnProfile && activeTab.includes('创作的模因')" class="status-bar">
-               <span v-if="meme.status === 'pending'" class="status-tag pending">⏳ 审核中</span>
-               <span v-if="meme.status === 'banned'" class="status-tag banned">❌ 已拒绝</span>
+            <div v-if="isOwnProfile && activeTab.includes('My Memes')" class="status-bar">
+               <span v-if="meme.status === 'pending'" class="status-tag pending">⏳ Under Review</span>
+               <span v-if="meme.status === 'banned'" class="status-tag banned">❌ Rejected</span>
                
                <button 
                  v-if="meme.status === 'banned'" 
                  class="action-btn edit-btn"
                  @click.stop="goToEdit(meme.id)"
                >
-                 重新修改
+                 Edit Again
                </button>
                <button 
                  v-if="meme.status === 'banned'" 
                  class="action-btn delete-btn"
                  @click.stop="deleteMeme(meme.id)"
                >
-                 删除
+                 Delete
                </button>
             </div>
           </div>
@@ -159,11 +159,11 @@
         </div>
       </template>
 
-      <!-- 分页按钮 -->
+      <!-- Pagination buttons -->
       <div class="pagination" v-if="totalPages > 1">
-        <button :disabled="currentPage === 1" @click="currentPage--">上一页</button>
+        <button :disabled="currentPage === 1" @click="currentPage--">Previous</button>
         <span>{{ currentPage }} / {{ totalPages }}</span>
-        <button :disabled="currentPage === totalPages" @click="currentPage++">下一页</button>
+        <button :disabled="currentPage === totalPages" @click="currentPage++">Next</button>
       </div>
     </div>
   </div>
@@ -181,7 +181,7 @@ const server_ip = authStore.server_ip || 'http://localhost:3000'
 
 const emit = defineEmits(['refresh'])
 
-// ✅ 接收 props
+// ✅ Receive props
 const props = defineProps({
   userData: Object,
   isOwnProfile: {
@@ -193,7 +193,7 @@ const props = defineProps({
 // 在模板中使用 isOwnProfile
 const isOwnProfile = computed(() => props.isOwnProfile)
 
-const userOnlyTabs = ['关注', '粉丝', '创作者数据']
+const userOnlyTabs = ['Following', 'Followers', 'Creator Data']
 
 // 自选列表数据
 const watchlist = ref([])
@@ -221,11 +221,11 @@ const fetchWatchlist = async () => {
       }))
     }
   } catch (error) {
-    console.error('获取自选列表失败:', error)
+    console.error('Failed to fetch watchlist:', error)
   }
 }
 
-// 从API获取创作者数据
+// Fetch creator data from API
 const fetchCreatorStats = async () => {
   if (!props.isOwnProfile) return
   try {
@@ -242,7 +242,7 @@ const fetchCreatorStats = async () => {
       }
     }
   } catch (error) {
-    console.error('获取创作者数据失败:', error)
+    console.error('Failed to fetch creator stats:', error)
   }
 }
 
@@ -366,7 +366,7 @@ watch(() => props.isOwnProfile, (newVal) => {
   }
 })
 
-const isUserListTab = computed(() => isOwnProfile.value && ['关注', '粉丝'].includes(activeTab.value))
+const isUserListTab = computed(() => isOwnProfile.value && ['Following', 'Followers'].includes(activeTab.value))
 
 // 判断是否是模因币标签页
 const isTokenTab = computed(() => activeTab.value.includes('模因币'))

@@ -46,11 +46,11 @@ const user_token = authStore.user_token // user token
 const defaultAvatar = 'https://i.pravatar.cc/150?img=1'
 
 const createDefaultMemesData = () => ({
-  '我创作的模因': [],
-  '我的模因币': [],
-  '我的收藏': [],
-  '粉丝': [],
-  '关注': [],
+  'Created Memes': [],
+  'My Meme Coins': [],
+  'My Favorites': [],
+  'Followers': [],
+  'Following': [],
 })
 
 // 用户数据（包含所有信息）
@@ -100,7 +100,7 @@ const fetchUserProfile = async () => {
       // 更新用户数据（包含所有信息）
       const data = result.data
       console.log('用户数据:', data)
-      console.log('粉丝列表数据:', data.memesData?.['粉丝'])
+      console.log('粉丝列表数据:', data.memesData?.['Followers'])
       console.log('当前登录用户:', authStore.username, '查看的用户:', username.value, '是否自己的主页:', isOwnProfile.value)
       const normalizedMemesData = {
         ...createDefaultMemesData(),
@@ -118,12 +118,12 @@ const fetchUserProfile = async () => {
         following: data.following,
         likes: data.likes,
         coins: data.coins || 0, // 用户 USDT 余额
-        collections: normalizedMemesData['我的收藏']?.length || 0,
+        collections: normalizedMemesData['My Favorites']?.length || 0,
         isFollowing: Boolean(data.isFollowing),
         memesData: normalizedMemesData
       }
       console.log('更新后的userData:', userData.value)
-      console.log('更新后的粉丝列表:', userData.value.memesData['粉丝'])
+      console.log('更新后的粉丝列表:', userData.value.memesData['Followers'])
     } else {
       error.value = result.message || 'Failed to fetch user information'
       console.error('获取用户信息失败:', result)

@@ -5,11 +5,11 @@
         <button class="close-button" @click="closeModal">×</button>
 
         <div class="form-header">
-          <h2>选择头像</h2>
-          <p>从以下头像中选择一个，或上传本地图片</p>
+          <h2>Select Avatar</h2>
+          <p>Choose from the following avatars or upload a local image</p>
         </div>
 
-        <!-- 本地上传头像 -->
+        <!-- Local upload avatar -->
         <div class="upload-section">
           <label class="upload-label">
             <input
@@ -21,13 +21,13 @@
             />
             <div class="upload-button">
               <span class="upload-icon">📷</span>
-              <span>上传本地图片</span>
+              <span>Upload local image</span>
             </div>
           </label>
           <div v-if="uploadedImagePreview" class="uploaded-preview">
-            <img :src="uploadedImagePreview" alt="上传预览" class="preview-image" />
+            <img :src="uploadedImagePreview" alt="Upload preview" class="preview-image" />
             <div class="preview-overlay">
-              <span class="preview-text">已选择</span>
+              <span class="preview-text">Selected</span>
             </div>
           </div>
         </div>
@@ -45,9 +45,9 @@
         </div>
 
         <div class="modal-actions">
-          <button class="cancel-btn" @click="closeModal">取消</button>
+          <button class="cancel-btn" @click="closeModal">Cancel</button>
           <button class="confirm-btn" @click="handleConfirm" :disabled="!selectedAvatar && !uploadedFile">
-            {{ saving ? '保存中...' : '确认' }}
+            {{ saving ? 'Saving...' : 'Confirm' }}
           </button>
         </div>
 
@@ -64,13 +64,13 @@ import { ref, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 
 const props = defineProps({
-  currentAvatar: String, // 当前头像URL
+  currentAvatar: String, // Current avatar URL
 })
 
 const emit = defineEmits(['close', 'save'])
 
 const authStore = useAuthStore();
-const server_ip = authStore.server_ip // 后端服务器地址
+const server_ip = authStore.server_ip // Backend server address
 const user_token = authStore.user_token // user token
 
 const errorMsg = ref('')
@@ -81,7 +81,7 @@ const uploadedImagePreview = ref(null)
 const fileInput = ref(null)
 const isUploadedFile = ref(false)
 
-// 默认头像列表（改为项目内相对路径，本地打包即用）
+// Default avatar list (changed to project-relative paths for local packaging)
 const localAvatarFiles = [
   'avatar1.svg',
   'avatar2.svg',

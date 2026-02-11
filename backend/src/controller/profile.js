@@ -246,12 +246,12 @@ export const getUserProfile = async (req, res) => {
       coins: user.coins || 0, // 用户 USDT 余额
       isFollowing: viewerIsFollowing,
       memesData: {
-        '我创作的模因': myMemes,
-        '我的模因币': myTokens,
-        '我的订单': myOrders,
-        '我的收藏': myFavorites,
-        '粉丝': followers,
-        '关注': followingForDisplay,
+        'Created Memes': myMemes,
+        'My Meme Coins': myTokens,
+        'My Orders': myOrders,
+        'My Favorites': myFavorites,
+        'Followers': followers,
+        'Following': followingForDisplay,
       }
     };
 

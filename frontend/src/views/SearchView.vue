@@ -54,7 +54,7 @@ const fetchSearchResults = async () => {
                   bio: userResponse.data.bio,
                   followersCount: userResponse.data.followers?.length || 0,
                   followingCount: userResponse.data.following?.length || 0,
-                  memesCount: userResponse.data.memesData?.我创作的模因?.length || 0,
+                  memesCount: userResponse.data.memesData?.['Created Memes']?.length || 0,
                   isFollowing: userResponse.data.isFollowing || false,
                   id: userResponse.data.id
                 }
