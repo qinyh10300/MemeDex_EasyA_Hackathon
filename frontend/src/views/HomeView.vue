@@ -108,8 +108,8 @@ import DexWallet from '../dex_frontend/src/components/Wallet.vue'
 .dex-embed {
   width: 100%;
   max-width: 1280px;
-  margin: 32px auto 0;
-  padding: 24px 16px 40px;
+  /* margin: 32px auto 0; */
+  padding: 0px 16px 40px;
   background: #070b10;
   color: rgba(255, 255, 255, 0.9);
   border-radius: 16px;
