@@ -105,8 +105,8 @@ const buildDemoTicks = () => {
     {timestamp: start + T * 15, price: 0.90},
     {timestamp: start + T * 16, price: 0.6},
     {timestamp: start + T * 17, price: 0.6},
-    {timestamp: start + T * 18, price: 0.6},
-    {timestamp: start + T * 19, price: 0.5},
+    {timestamp: start + T * 18, price: 0.5},
+    {timestamp: start + T * 19, price: 0.6},
     {timestamp: start + T * 20, price: 0.6}
   ]
 
