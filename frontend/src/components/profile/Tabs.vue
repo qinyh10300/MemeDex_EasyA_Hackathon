@@ -268,89 +268,89 @@ const formatVolume = (volume) => {
   return volume.toFixed(2)
 }
 
-// 根据性别获取代词
+// Get pronoun based on gender
 const getPronoun = (user) => {
-  if (!user) return '他'
+  if (!user) return 'Their'
 
-  // 如果后端有性别字段，优先使用
+  // Prioritize backend gender field if available
   if (user.gender) {
-    return user.gender === 'female' ? '她' : '他'
+    return user.gender === 'female' ? 'Her' : 'His'
   }
 
-  // 简单的昵称启发式检测（可根据需要扩展）
+  // Simple heuristic detection based on nickname (can be extended as needed)
   const nickname = user.nickname || user.username || ''
 
-  // 常见女性昵称后缀
+  // Common female nickname suffixes (Chinese)
   const femaleSuffixes = ['妹', '姐', '妈', '婆', '娘', '女', '仙子', '公主']
   const femalePrefixes = ['小', '美', '甜']
 
-  // 检查是否包含女性标识词
+  // Check if it contains female indicators
   const hasFemaleIndicator =
     femaleSuffixes.some(suffix => nickname.includes(suffix)) ||
     femalePrefixes.some(prefix => nickname.includes(prefix)) ||
     nickname.includes('girl') || nickname.includes('women') ||
     nickname.match(/[♀♀]/)
 
-  // 检查是否包含男性标识词
+  // Check if it contains male indicators (Chinese)
   const maleSuffixes = ['哥', '弟', '爸', '叔', '爷', '男', '先生', '帅哥']
   const hasMaleIndicator =
     maleSuffixes.some(suffix => nickname.includes(suffix)) ||
     nickname.includes('boy') || nickname.includes('man') ||
     nickname.match(/[♂♂]/)
 
-  // 如果检测到女性标识，使用"她"
+  // If female indicator detected, use "Her"
   if (hasFemaleIndicator && !hasMaleIndicator) {
-    return '她'
+    return 'Her'
   }
 
-  // 默认使用"他"
-  return '他'
+  // Default to "His"
+  return 'His'
 }
 
-// Tabs - 如果是自己的主页，显示"我"；如果不是，显示"他/她"
+// Tabs - if own profile, show "My"; otherwise, show "His/Her"
 const tabs = computed(() => {
-  const pronoun = props.isOwnProfile ? '我' : getPronoun(props.userData)
-  const baseTabs = [`${pronoun}创作的模因`, `${pronoun}的模因币`, `${pronoun}的收藏`]
+  const pronoun = props.isOwnProfile ? 'My' : getPronoun(props.userData)
+  const baseTabs = [`${pronoun} Created Memes`, `${pronoun} Meme Coins`, `${pronoun} Favorites`]
   if (props.isOwnProfile) {
     return [...baseTabs, ...userOnlyTabs]
   }
   return baseTabs
 })
 
-// 获取当前标签页的正确代词
+// Get current tab's correct pronoun
 const getCurrentPronoun = () => {
-  return props.isOwnProfile ? '我' : getPronoun(props.userData)
+  return props.isOwnProfile ? 'My' : getPronoun(props.userData)
 }
 
-// 获取初始标签
+// Get initial tab
 const getInitialTab = () => {
   const pronoun = getCurrentPronoun()
-  return `${pronoun}创作的模因`
+  return `${pronoun} Created Memes`
 }
 
-// 初始激活标签需要根据 isOwnProfile 动态设置
+// Initial active tab needs to be dynamically set based on isOwnProfile
 const activeTab = ref(getInitialTab())
 
-// 监听变化并更新标签
+// Watch for changes and update tabs
 watch(() => [props.isOwnProfile, props.userData], () => {
   const newTab = getInitialTab()
-  if (activeTab.value && (activeTab.value.includes('创作的模因') || activeTab.value.includes('的模因币') || activeTab.value.includes('的收藏'))) {
-    // 如果当前标签是包含代词的标签，更新代词部分
-    const tabType = activeTab.value.replace(/[我他她]创作的模因|[我他她]的模因币|[我他她]的收藏/g, '')
+  if (activeTab.value && (activeTab.value.includes('Created Memes') || activeTab.value.includes('Meme Coins') || activeTab.value.includes('Favorites'))) {
+    // If current tab contains pronoun, update pronoun part
+    const tabType = activeTab.value.replace(/My Created Memes|His Created Memes|Her Created Memes|My Meme Coins|His Meme Coins|Her Meme Coins|My Favorites|His Favorites|Her Favorites/g, '')
     const pronoun = getCurrentPronoun()
 
-    // 根据标签类型重新构建标签名
-    if (activeTab.value.includes('模因币')) {
-      activeTab.value = `${pronoun}的模因币`
-    } else if (activeTab.value.includes('收藏')) {
-      activeTab.value = `${pronoun}的收藏`
+    // Rebuild tab name based on tab type
+    if (activeTab.value.includes('Meme Coins')) {
+      activeTab.value = `${pronoun} Meme Coins`
+    } else if (activeTab.value.includes('Favorites')) {
+      activeTab.value = `${pronoun} Favorites`
     } else {
       activeTab.value = newTab
     }
   }
 }, { immediate: true })
 
-// 初始化数据
+// Initialize data
 onMounted(() => {
   if (props.isOwnProfile) {
     fetchWatchlist()
@@ -358,7 +358,7 @@ onMounted(() => {
   }
 })
 
-// 监听是否是自己的主页，变化时重新加载
+// Watch if it's own profile, reload when changed
 watch(() => props.isOwnProfile, (newVal) => {
   if (newVal) {
     fetchWatchlist()
@@ -368,50 +368,50 @@ watch(() => props.isOwnProfile, (newVal) => {
 
 const isUserListTab = computed(() => isOwnProfile.value && ['Following', 'Followers'].includes(activeTab.value))
 
-// 判断是否是模因币标签页
-const isTokenTab = computed(() => activeTab.value.includes('模因币'))
+// Check if it's meme coin tab
+const isTokenTab = computed(() => activeTab.value.includes('Meme Coins'))
 
-// 格式化数字（千分位）
+// Format numbers (with thousands separator)
 const formatNumber = (num) => {
   if (num === undefined || num === null) return '0'
   return Number(num).toLocaleString('zh-CN', { maximumFractionDigits: 2 })
 }
 
-// 格式化货币
+// Format currency
 const formatCurrency = (num) => {
   if (num === undefined || num === null) return '¥0.00'
   return '¥' + Number(num).toLocaleString('zh-CN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 }
 
-// 当前页
+// Current page
 const currentPage = ref(1)
 const itemsPerPage = 4
 
-// 每次切换 tab，重置分页
+// Reset pagination when switching tabs
 watch(activeTab, () => {
   currentPage.value = 1
 })
 
-// ✅ 点击跳转函数
+// ✅ Click navigation function
 const goToMemeDetail = (id) => {
   router.push(`/meme/${id}`)
 }
 
-// 跳转到用户个人主页
+// Navigate to user profile page
 const goToUserProfile = (username) => {
-  // 移除 @ 符号（如果有）
+  // Remove @ symbol if present
   const cleanUsername = username.replace('@', '')
   router.push(`/profile/${cleanUsername}`)
 }
 
-// 跳转到编辑页面
+// Navigate to edit page
 const goToEdit = (id) => {
   router.push(`/create-meme?id=${id}`)
 }
 
-// 删除模因
+// Delete meme
 const deleteMeme = async (id) => {
-  if (!confirm('确定要删除这个模因吗？此操作无法撤销。')) return
+  if (!confirm('Are you sure you want to delete this meme? This action cannot be undone.')) return
 
   try {
     const res = await fetch(`${server_ip}/api/meme/${id}`, {
@@ -421,36 +421,36 @@ const deleteMeme = async (id) => {
       }
     })
     
-    // 尝试解析 JSON
+    // Try to parse JSON
     let data = {}
     try {
       data = await res.json()
     } catch (e) {}
 
     if (res.ok) {
-      alert('删除成功')
+      alert('Deleted successfully')
       emit('refresh')
     } else {
-      alert(data.message || '删除失败')
+      alert(data.message || 'Deletion failed')
     }
   } catch (e) {
     console.error(e)
-    alert('网络错误，请稍后重试')
+    alert('Network error, please try again later')
   }
 }
 
-// 默认头像URL
+// Default avatar URL
 const defaultAvatar = 'https://i.pravatar.cc/150?img=1'
 
-// 获取头像URL，如果为空则使用默认头像
+// Get avatar URL, use default avatar if empty
 const getAvatarUrl = (avatar, id) => {
   if (avatar && avatar.trim() !== '') {
     return avatar
   }
-  // 如果avatar为空，使用ID生成一个简单的头像
-  // 将ID转换为数字用于pravatar.cc
+  // If avatar is empty, use ID to generate a simple avatar
+  // Convert ID to number for pravatar.cc
   if (id) {
-    // 使用ID的hash值生成一个1-70之间的数字
+    // Use ID's hash value to generate a number between 1-70
     let hash = 0
     for (let i = 0; i < id.length; i++) {
       hash = ((hash << 5) - hash) + id.charCodeAt(i)
@@ -462,24 +462,24 @@ const getAvatarUrl = (avatar, id) => {
   return defaultAvatar
 }
 
-// 头像加载失败时的处理
+// Handle avatar loading failure
 const handleAvatarError = (event) => {
-  // 如果当前不是默认头像，则切换到默认头像
+  // If not currently the default avatar, switch to default avatar
   if (event.target.src !== defaultAvatar) {
     event.target.src = defaultAvatar
   }
 }
 
-// 计算当前页数据
+// Calculate current page data
 const pagedMemes = computed(() => {
   if (!props.userData || !props.userData.memesData) return []
   const allMemes = props.userData.memesData[activeTab.value] || []
-  console.log('当前标签页:', activeTab.value, '数据:', allMemes)
+  console.log('Current tab:', activeTab.value, 'Data:', allMemes)
   const start = (currentPage.value - 1) * itemsPerPage
   return allMemes.slice(start, start + itemsPerPage)
 })
 
-// 总页数
+// Total pages
 const totalPages = computed(() => {
   if (!props.userData || !props.userData.memesData) return 0
   const allMemes = props.userData.memesData[activeTab.value] || []
