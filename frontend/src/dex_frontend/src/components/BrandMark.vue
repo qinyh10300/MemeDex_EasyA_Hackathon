@@ -1,15 +1,15 @@
 <template>
 	<div class="brand" :class="{ compact }">
-		<div v-if="logoSrc && badge" class="logoWrap" :style="{ width: sizePx + 'px', height: sizePx + 'px' }">
+		<!-- <div v-if="logoSrc && badge" class="logoWrap" :style="{ width: sizePx + 'px', height: sizePx + 'px' }">
 			<img class="logoIn" :src="logoSrc" alt="DHC" />
-		</div>
-		<img
+		</div> -->
+		<!-- <img
 			v-else-if="logoSrc"
 			class="logo"
 			:style="{ width: sizePx + 'px', height: sizePx + 'px' }"
 			:src="logoSrc"
 			alt="DHC"
-		/>
+		/> -->
 
 		<!-- <div class="text">
 			<div class="name" :style="nameStyle">DarkHorse Community</div>
