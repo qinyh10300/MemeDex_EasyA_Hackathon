@@ -125,11 +125,11 @@ const fetchUserProfile = async () => {
       console.log('更新后的userData:', userData.value)
       console.log('更新后的粉丝列表:', userData.value.memesData['粉丝'])
     } else {
-      error.value = result.message || '获取用户信息失败'
+      error.value = result.message || 'Failed to fetch user information'
       console.error('获取用户信息失败:', result)
     }
   } catch (err) {
-    error.value = '网络错误，请稍后重试'
+    error.value = 'Network error. Please try again later.'
     console.error('获取用户信息时发生错误:', err)
   } finally {
     loading.value = false

@@ -195,34 +195,34 @@ const goToProfile = (username) => {
       <nav class="nav-container">
         <RouterLink to="/" class="nav-item" active-class="active">
           <img class="nav-icon" src="@/assets/home.png" alt="Home" />
-          <span class="nav-text">主页面</span>
+          <span class="nav-text">Home</span>
         </RouterLink>
         <RouterLink v-if="isLoggedIn" :to="`/profile/${username}`" class="nav-item" active-class="active">
           <img class="nav-icon" src="@/assets/profile.png" alt="Profile" />
-          <span class="nav-text">个人主页</span>
+          <span class="nav-text">Profile</span>
         </RouterLink>
         <RouterLink v-if="isLoggedIn" :to="`/create-meme`" class="nav-item" active-class="active">
           <img class="nav-icon" src="@/assets/doge.png" alt="Profile" />
-          <span class="nav-text">创建模因</span>
+          <span class="nav-text">Create Meme</span>
         </RouterLink>
         <RouterLink v-if="isLoggedIn" :to="`/notification`" class="nav-item" active-class="active">
           <img class="nav-icon" src="@/assets/kapibala.ico" alt="Profile" />
-          <span class="nav-text">消息通知</span>
+          <span class="nav-text">Notifications</span>
         </RouterLink>
         <RouterLink v-if="isLoggedIn" :to="`/chat`" class="nav-item" active-class="active">
           <img class="nav-icon" src="@/assets/pepe.avif" alt="Profile" />
-          <span class="nav-text">私信、C2C交易</span>
+          <span class="nav-text">Direct Message & C2C</span>
           <span v-if="messageCount + tradeCount > 0" class="nav-badge">
             {{ messageCount + tradeCount > 99 ? '99+' : messageCount + tradeCount }}
           </span>
         </RouterLink>
         <RouterLink v-if="isLoggedIn" to="/gamification" class="nav-item" active-class="active">
           <img class="nav-icon" src="@/assets/bnb.png" alt="Gamification" />
-          <span class="nav-text">游戏化中心</span>
+          <span class="nav-text">Gamification Center</span>
         </RouterLink>
         <RouterLink to="/discover" class="nav-item" active-class="active">
           <span class="nav-icon">🔍</span>
-          <span class="nav-text">发现</span>
+          <span class="nav-text">Discover</span>
         </RouterLink>
         <RouterLink 
           v-if="isLoggedIn && authStore.user_role === 'reviewer'" 
@@ -231,15 +231,15 @@ const goToProfile = (username) => {
           active-class="active"
         >
           <img class="nav-icon" src="@/assets/search.png" alt="Profile" />
-          <span class="nav-text">审核模因</span>
+          <span class="nav-text">Audit Memes</span>
         </RouterLink>
         <div v-if="!isLoggedIn" @click="showLogin = true" class="nav-item" active-class="active">
           <span class="nav-icon">🔑</span>
-          <span class="nav-text">登录</span>
+          <span class="nav-text">Login</span>
         </div>
         <div v-if="isLoggedIn" @click="showLoginOut = true" class="nav-item" active-class="active">
           <img class="nav-icon" src="@/assets/logo.svg" alt="Profile" />
-          <span class="nav-text">退出登录</span>
+          <span class="nav-text">Logout</span>
         </div>
       </nav>
     </aside>
@@ -249,14 +249,14 @@ const goToProfile = (username) => {
       <!-- ⭐ 新增这一行 -->
       <!-- 顶部栏 -->
       <div class="top-bar">
-        <!-- 未登录按钮 -->
+        <!-- Not logged in button -->
         <button v-if="!isLoggedIn" @click="showLogin = true" class="login-btn">
-          登录
+          Login
         </button>
 
-        <!-- 已登录按钮 -->
+        <!-- Logged in button -->
         <div v-else class="top-buttons">
-          <!-- 左侧的头像 + 昵称 + 用户名 -->
+          <!-- Avatar + Nickname + Username -->
           <div class="user-info" @click="goToProfile(authStore.username)" style="cursor: pointer;">
             <img :src="authStore.avatar" alt="avatar" class="user-avatar" />
             <div class="user-text">
@@ -264,17 +264,17 @@ const goToProfile = (username) => {
               <span class="username">@{{ authStore.username }}</span>
             </div>
             <div v-if="authStore.user_role === 'reviewer'" class="reviewer-badge">
-              审核员
+              Reviewer
             </div>
             <div v-else class="reviewer-badge">
-              普通用户
+              Regular User
             </div>
           </div>
 
           <div class="button-group">
             <DexWallet />
-            <RouterLink to="/create-meme" class="top-button">创建模因</RouterLink>
-            <button @click="showLoginOut = true" class="top-button">退出登录</button>
+            <RouterLink to="/create-meme" class="top-button">Create Meme</RouterLink>
+            <button @click="showLoginOut = true" class="top-button">Logout</button>
           </div>
         </div>
       </div>

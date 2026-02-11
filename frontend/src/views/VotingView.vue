@@ -1,8 +1,8 @@
 <template>
   <div class="voting-page">
     <header class="page-header">
-      <h1 class="title">🗳️ 社区投票</h1>
-      <p class="subtitle">参与社区治理，为你喜爱的模因投票</p>
+      <h1 class="title">🗳️ Community Voting</h1>
+      <p class="subtitle">Join governance and vote for the memes you love</p>
     </header>
 
     <!-- 投票统计 -->
@@ -11,28 +11,28 @@
         <span class="stat-icon">🔥</span>
         <div class="stat-content">
           <span class="stat-value">{{ activePolls.length }}</span>
-          <span class="stat-label">进行中的投票</span>
+          <span class="stat-label">Active Polls</span>
         </div>
       </div>
       <div class="stat-card">
         <span class="stat-icon">✅</span>
         <div class="stat-content">
           <span class="stat-value">{{ userVoteCount }}</span>
-          <span class="stat-label">我参与的投票</span>
+          <span class="stat-label">Polls I Voted In</span>
         </div>
       </div>
       <div class="stat-card">
         <span class="stat-icon">👥</span>
         <div class="stat-content">
           <span class="stat-value">{{ totalVoters }}</span>
-          <span class="stat-label">总参与人数</span>
+          <span class="stat-label">Total Participants</span>
         </div>
       </div>
       <div class="stat-card">
         <span class="stat-icon">🎁</span>
         <div class="stat-content">
           <span class="stat-value">{{ votingRewards }}</span>
-          <span class="stat-label">投票奖励</span>
+          <span class="stat-label">Voting Rewards</span>
         </div>
       </div>
     </div>
@@ -57,7 +57,7 @@
     <div class="polls-list">
       <div v-if="filteredPolls.length === 0" class="empty-state">
         <span class="empty-icon">📭</span>
-        <p>暂无投票</p>
+        <p>No polls yet</p>
       </div>
 
       <div
@@ -72,9 +72,9 @@
           <div class="poll-status">
             <span v-if="poll.status === 'active'" class="status-active">
               <span class="pulse"></span>
-              进行中
+              Active
             </span>
-            <span v-else class="status-ended">已结束</span>
+            <span v-else class="status-ended">Ended</span>
           </div>
         </div>
 
@@ -104,11 +104,11 @@
                 ></div>
               </div>
               <div class="vote-info">
-                <span class="vote-count">{{ option.votes }} 票</span>
+                <span class="vote-count">{{ option.votes }} votes</span>
                 <span class="vote-percent">{{ getVotePercent(poll, option).toFixed(1) }}%</span>
               </div>
             </div>
-            <div v-if="poll.userVote === option.id" class="voted-badge">✓ 已投</div>
+            <div v-if="poll.userVote === option.id" class="voted-badge">✓ Voted</div>
           </div>
         </div>
 
@@ -117,16 +117,16 @@
           <div class="poll-meta">
             <span class="meta-item">
               <span class="meta-icon">👥</span>
-              {{ poll.totalVotes }} 人参与
+              {{ poll.totalVotes }} participants
             </span>
             <span class="meta-item">
               <span class="meta-icon">⏰</span>
-              {{ poll.status === 'active' ? `剩余 ${formatTimeLeft(poll.endTime)}` : formatDate(poll.endTime) + ' 结束' }}
+              {{ poll.status === 'active' ? `Time left: ${formatTimeLeft(poll.endTime)}` : formatDate(poll.endTime) + ' ended' }}
             </span>
           </div>
           <div class="poll-rewards" v-if="poll.rewards">
             <span class="reward-icon">🎁</span>
-            <span class="reward-text">参与奖励: {{ poll.rewards }}</span>
+            <span class="reward-text">Participation reward: {{ poll.rewards }}</span>
           </div>
         </div>
       </div>
@@ -134,28 +134,28 @@
 
     <!-- 创建投票 -->
     <div v-if="canCreatePoll" class="create-section">
-      <h2 class="section-title">📝 发起投票</h2>
+      <h2 class="section-title">📝 Create a Poll</h2>
       <div class="create-form">
         <div class="form-group">
-          <label>投票标题</label>
+          <label>Poll Title</label>
           <input
             v-model="newPoll.title"
             type="text"
-            placeholder="输入投票标题..."
+            placeholder="Enter poll title..."
             class="form-input"
           />
         </div>
         <div class="form-group">
-          <label>投票描述</label>
+          <label>Poll Description</label>
           <textarea
             v-model="newPoll.description"
-            placeholder="详细描述投票内容..."
+            placeholder="Describe the poll in detail..."
             class="form-textarea"
             rows="3"
           ></textarea>
         </div>
         <div class="form-group">
-          <label>投票类型</label>
+          <label>Poll Type</label>
           <div class="type-selector">
             <button
               v-for="type in pollTypes"
@@ -168,7 +168,7 @@
           </div>
         </div>
         <div class="form-group">
-          <label>投票选项</label>
+          <label>Poll Options</label>
           <div class="options-editor">
             <div
               v-for="(option, index) in newPoll.options"
@@ -178,7 +178,7 @@
               <input
                 v-model="option.name"
                 type="text"
-                :placeholder="`选项 ${index + 1}`"
+                :placeholder="`Option ${index + 1}`"
                 class="form-input"
               />
               <button
@@ -194,38 +194,38 @@
               class="add-option-btn"
               @click="addOption"
             >
-              + 添加选项
+              + Add option
             </button>
           </div>
         </div>
         <div class="form-group">
-          <label>投票时长</label>
+          <label>Duration</label>
           <select v-model="newPoll.duration" class="form-select">
-            <option value="1">1 天</option>
-            <option value="3">3 天</option>
-            <option value="7">7 天</option>
-            <option value="14">14 天</option>
+            <option value="1">1 day</option>
+            <option value="3">3 days</option>
+            <option value="7">7 days</option>
+            <option value="14">14 days</option>
           </select>
         </div>
         <button class="create-btn" @click="createPoll" :disabled="!canSubmitPoll">
-          发起投票
+          Create Poll
         </button>
       </div>
     </div>
 
     <!-- 历史投票 -->
     <div class="history-section">
-      <h2 class="section-title">📜 投票历史</h2>
+      <h2 class="section-title">📜 Poll History</h2>
       <div class="history-list">
         <div v-for="poll in endedPolls.slice(0, 5)" :key="poll.id" class="history-item">
           <div class="history-info">
             <span class="history-title">{{ poll.title }}</span>
             <span class="history-result">
-              获胜: {{ getWinningOption(poll)?.name }}
+              Winner: {{ getWinningOption(poll)?.name }}
             </span>
           </div>
           <div class="history-stats">
-            <span>{{ poll.totalVotes }} 票</span>
+            <span>{{ poll.totalVotes }} votes</span>
             <span>{{ formatDate(poll.endTime) }}</span>
           </div>
         </div>
@@ -246,7 +246,7 @@ const activeTab = ref('active')
 const polls = ref([])
 const userVoteCount = ref(0)
 const totalVoters = ref(0)
-const votingRewards = ref('0 铜钱')
+const votingRewards = ref('0 Copper')
 const loading = ref(false)
 
 // 新投票表单
@@ -260,16 +260,16 @@ const newPoll = ref({
 
 // 配置
 const tabs = ref([
-  { id: 'active', label: '进行中', icon: '🔥', count: 0 },
-  { id: 'ended', label: '已结束', icon: '✅', count: 0 },
-  { id: 'my', label: '我参与的', icon: '👤', count: 0 }
+  { id: 'active', label: 'Active', icon: '🔥', count: 0 },
+  { id: 'ended', label: 'Ended', icon: '✅', count: 0 },
+  { id: 'my', label: 'Voted', icon: '👤', count: 0 }
 ])
 
 const pollTypes = [
-  { id: 'rating', label: '模因评级', icon: '⭐' },
-  { id: 'feature', label: '功能建议', icon: '💡' },
-  { id: 'event', label: '活动投票', icon: '🎉' },
-  { id: 'other', label: '其他', icon: '📋' }
+  { id: 'rating', label: 'Meme Rating', icon: '⭐' },
+  { id: 'feature', label: 'Feature Request', icon: '💡' },
+  { id: 'event', label: 'Event Poll', icon: '🎉' },
+  { id: 'other', label: 'Other', icon: '📋' }
 ]
 
 // 计算属性
@@ -345,10 +345,10 @@ const getImageUrl = (url) => {
 // 方法
 const getPollTypeText = (type) => {
   const map = {
-    rating: '⭐ 模因评级',
-    feature: '💡 功能建议',
-    event: '🎉 活动投票',
-    other: '📋 其他'
+    rating: '⭐ Meme Rating',
+    feature: '💡 Feature Request',
+    event: '🎉 Event Poll',
+    other: '📋 Other'
   }
   return map[type] || type
 }
@@ -375,24 +375,24 @@ const formatTimeLeft = (endTime) => {
   const end = new Date(endTime)
   const diff = end - now
   
-  if (diff <= 0) return '已结束'
+  if (diff <= 0) return 'Ended'
   
   const days = Math.floor(diff / 86400000)
   const hours = Math.floor((diff % 86400000) / 3600000)
   
-  if (days > 0) return `${days}天${hours}小时`
-  if (hours > 0) return `${hours}小时`
-  return '即将结束'
+  if (days > 0) return `${days}d ${hours}h`
+  if (hours > 0) return `${hours}h`
+  return 'Ending soon'
 }
 
 const formatDate = (dateStr) => {
-  return new Date(dateStr).toLocaleDateString('zh-CN')
+  return new Date(dateStr).toLocaleDateString('en-US')
 }
 
 const vote = async (poll, option) => {
   if (poll.status !== 'active' || poll.hasVoted) return
   if (!authStore.username) {
-    alert('请先登录')
+    alert('Please log in first')
     return
   }
   
@@ -415,11 +415,11 @@ const vote = async (poll, option) => {
       poll.options = data.data.options || poll.options
       updateTabCounts()
     } else {
-      alert(data.message || '投票失败')
+      alert(data.message || 'Voting failed')
     }
   } catch (error) {
-    console.error('投票失败:', error)
-    alert('投票失败，请重试')
+    console.error('Voting failed:', error)
+    alert('Voting failed. Please try again.')
   }
 }
 
@@ -438,7 +438,7 @@ const removeOption = (index) => {
 const createPoll = async () => {
   if (!canSubmitPoll.value) return
   if (!authStore.username) {
-    alert('请先登录')
+    alert('Please log in first')
     return
   }
   
@@ -469,13 +469,13 @@ const createPoll = async () => {
         duration: '3'
       }
       await fetchPolls()
-      alert('投票创建成功！')
+      alert('Poll created successfully!')
     } else {
-      alert(data.message || '创建失败')
+      alert(data.message || 'Creation failed')
     }
   } catch (error) {
-    console.error('创建投票失败:', error)
-    alert('创建失败，请重试')
+    console.error('Failed to create poll:', error)
+    alert('Creation failed. Please try again.')
   }
 }
 

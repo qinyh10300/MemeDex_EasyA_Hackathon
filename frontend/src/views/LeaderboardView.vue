@@ -1,8 +1,8 @@
 <template>
   <div class="leaderboard-page">
     <header class="page-header">
-      <h1 class="title">🏆 模因排行榜</h1>
-      <p class="subtitle">实时追踪最热门、涨幅最大、交易最活跃的模因币</p>
+      <h1 class="title">🏆 Meme Leaderboard</h1>
+      <p class="subtitle">Track the hottest, top gainers, and most active meme coins in real time</p>
     </header>
 
     <!-- 时间范围选择 -->
@@ -39,12 +39,12 @@
     <div class="leaderboard-content">
       <div v-if="loading" class="loading-state">
         <div class="spinner"></div>
-        <p>加载中...</p>
+        <p>Loading...</p>
       </div>
 
       <div v-else-if="leaderboardData.length === 0" class="empty-state">
         <span class="empty-icon">📊</span>
-        <p>暂无数据</p>
+        <p>No data</p>
       </div>
 
       <div v-else class="leaderboard-list">
@@ -71,7 +71,7 @@
               </div>
               <div class="stat-item">
                 <span class="stat-value">${{ formatPrice(item.price) }}</span>
-                <span class="stat-label">当前价格</span>
+                <span class="stat-label">Current Price</span>
               </div>
             </div>
           </div>
@@ -80,12 +80,12 @@
         <!-- 其余排名列表 -->
         <div class="rank-list">
           <div class="list-header">
-            <span class="col rank">排名</span>
-            <span class="col meme">模因</span>
-            <span class="col price">价格</span>
+            <span class="col rank">Rank</span>
+            <span class="col meme">Meme</span>
+            <span class="col price">Price</span>
             <span class="col change">{{ getMainStatLabel() }}</span>
-            <span class="col volume">24h交易量</span>
-            <span class="col holders">持有人数</span>
+            <span class="col volume">24h Volume</span>
+            <span class="col holders">Holders</span>
           </div>
           <div
             v-for="(item, index) in leaderboardData.slice(3)"
@@ -114,34 +114,34 @@
 
     <!-- 市场统计概览 -->
     <div class="market-overview">
-      <h2 class="section-title">📈 市场概览</h2>
+      <h2 class="section-title">📈 Market Overview</h2>
       <div class="overview-grid">
         <div class="overview-card">
           <span class="overview-icon">💰</span>
           <div class="overview-content">
             <span class="overview-value">${{ formatVolume(marketStats.totalVolume) }}</span>
-            <span class="overview-label">24h 总交易量</span>
+            <span class="overview-label">24h Total Volume</span>
           </div>
         </div>
         <div class="overview-card">
           <span class="overview-icon">📊</span>
           <div class="overview-content">
             <span class="overview-value">{{ marketStats.totalMemes }}</span>
-            <span class="overview-label">模因总数</span>
+            <span class="overview-label">Total Memes</span>
           </div>
         </div>
         <div class="overview-card">
           <span class="overview-icon">👥</span>
           <div class="overview-content">
             <span class="overview-value">{{ marketStats.totalTraders }}</span>
-            <span class="overview-label">活跃交易者</span>
+            <span class="overview-label">Active Traders</span>
           </div>
         </div>
         <div class="overview-card">
           <span class="overview-icon">🔥</span>
           <div class="overview-content">
             <span class="overview-value">{{ marketStats.totalTrades }}</span>
-            <span class="overview-label">24h 交易笔数</span>
+            <span class="overview-label">24h Trades</span>
           </div>
         </div>
       </div>
@@ -172,18 +172,18 @@ const marketStats = ref({
 
 // 配置
 const tabs = [
-  { id: 'hot', label: '热度榜', icon: '🔥' },
-  { id: 'gainers', label: '涨幅榜', icon: '📈' },
-  { id: 'losers', label: '跌幅榜', icon: '📉' },
-  { id: 'volume', label: '交易量榜', icon: '💎' },
-  { id: 'new', label: '新币榜', icon: '✨' }
+  { id: 'hot', label: 'Hot', icon: '🔥' },
+  { id: 'gainers', label: 'Top Gainers', icon: '📈' },
+  { id: 'losers', label: 'Top Losers', icon: '📉' },
+  { id: 'volume', label: 'Volume', icon: '💎' },
+  { id: 'new', label: 'New', icon: '✨' }
 ]
 
 const timeRanges = [
-  { value: '1h', label: '1小时' },
-  { value: '24h', label: '24小时' },
-  { value: '7d', label: '7天' },
-  { value: '30d', label: '30天' }
+  { value: '1h', label: '1h' },
+  { value: '24h', label: '24h' },
+  { value: '7d', label: '7d' },
+  { value: '30d', label: '30d' }
 ]
 
 // 获取排行榜数据
@@ -239,11 +239,11 @@ const formatMainStat = (item) => {
 
 const getMainStatLabel = () => {
   switch (activeTab.value) {
-    case 'hot': return '热度指数'
+    case 'hot': return 'Heat Index'
     case 'gainers':
-    case 'losers': return '价格变化'
-    case 'volume': return '交易量'
-    case 'new': return '创建时间'
+    case 'losers': return 'Price Change'
+    case 'volume': return 'Volume'
+    case 'new': return 'Created'
     default: return ''
   }
 }
@@ -261,10 +261,10 @@ const formatTimeAgo = (dateStr) => {
   const now = new Date()
   const diff = now - date
   const hours = Math.floor(diff / 3600000)
-  if (hours < 1) return '刚刚'
-  if (hours < 24) return `${hours}小时前`
+  if (hours < 1) return 'Just now'
+  if (hours < 24) return `${hours}h ago`
   const days = Math.floor(hours / 24)
-  return `${days}天前`
+  return `${days}d ago`
 }
 
 const getImageUrl = (url) => {

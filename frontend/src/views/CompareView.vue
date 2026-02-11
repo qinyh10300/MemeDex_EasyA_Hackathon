@@ -1,8 +1,8 @@
 <template>
   <div class="compare-page">
     <header class="page-header">
-      <h1 class="title">📊 模因对比分析</h1>
-      <p class="subtitle">多维度对比，发现投资机会</p>
+      <h1 class="title">📊 Meme Comparison</h1>
+      <p class="subtitle">Compare across dimensions to spot opportunities</p>
     </header>
 
     <!-- 选择对比模因 -->
@@ -24,7 +24,7 @@
           </template>
           <template v-else>
             <span class="add-icon">+</span>
-            <span class="add-text">添加模因</span>
+            <span class="add-text">Add Meme</span>
           </template>
         </div>
       </div>
@@ -34,7 +34,7 @@
     <div v-if="showSelector" class="selector-modal" @click.self="showSelector = false">
       <div class="selector-content">
         <div class="selector-header">
-          <h3>选择模因</h3>
+          <h3>Select Meme</h3>
           <button class="close-btn" @click="showSelector = false">×</button>
         </div>
         <div class="search-box">
@@ -42,7 +42,7 @@
           <input
             v-model="searchQuery"
             type="text"
-            placeholder="搜索模因名称或代号..."
+            placeholder="Search meme name or ticker..."
             class="search-input"
           />
           <span v-if="searching" class="search-loading">⏳</span>
@@ -51,12 +51,12 @@
           <!-- 加载中 -->
           <div v-if="searching" class="search-status">
             <span class="loading-spinner">⏳</span>
-            <span>搜索中...</span>
+            <span>Searching...</span>
           </div>
           <!-- 无结果 -->
           <div v-else-if="availableMemes.length === 0" class="search-status">
             <span class="empty-icon">📭</span>
-            <span>{{ searchQuery ? '未找到相关模因' : '请输入关键词搜索' }}</span>
+            <span>{{ searchQuery ? 'No related memes found' : 'Enter a keyword to search' }}</span>
           </div>
           <!-- 结果列表 -->
           <div
@@ -82,7 +82,7 @@
       <!-- 价格走势对比 -->
       <div class="chart-section">
         <div class="section-header">
-          <h2 class="section-title">📈 价格走势对比</h2>
+          <h2 class="section-title">📈 Price Trend Comparison</h2>
           <div class="time-selector">
             <button
               v-for="range in timeRanges"
@@ -116,10 +116,10 @@
 
       <!-- 关键指标对比表 -->
       <div class="metrics-section">
-        <h2 class="section-title">📋 关键指标对比</h2>
+        <h2 class="section-title">📋 Key Metrics Comparison</h2>
         <div class="metrics-table">
           <div class="table-header">
-            <div class="table-cell metric-name">指标</div>
+            <div class="table-cell metric-name">Metric</div>
             <div
               v-for="(slot, index) in filledSlots"
               :key="index"
@@ -131,13 +131,13 @@
             </div>
           </div>
           <div class="table-row">
-            <div class="table-cell metric-name">当前价格</div>
+            <div class="table-cell metric-name">Current Price</div>
             <div v-for="(slot, index) in filledSlots" :key="index" class="table-cell">
               ${{ (slot.meme.price || 0).toFixed(6) }}
             </div>
           </div>
           <div class="table-row">
-            <div class="table-cell metric-name">24h涨跌</div>
+            <div class="table-cell metric-name">24h Change</div>
             <div
               v-for="(slot, index) in filledSlots"
               :key="index"
@@ -148,25 +148,25 @@
             </div>
           </div>
           <div class="table-row">
-            <div class="table-cell metric-name">24h交易量</div>
+            <div class="table-cell metric-name">24h Volume</div>
             <div v-for="(slot, index) in filledSlots" :key="index" class="table-cell">
               ${{ formatVolume(slot.meme.volume24h) }}
             </div>
           </div>
           <div class="table-row">
-            <div class="table-cell metric-name">持有人数</div>
+            <div class="table-cell metric-name">Holders</div>
             <div v-for="(slot, index) in filledSlots" :key="index" class="table-cell">
               {{ slot.meme.holders }}
             </div>
           </div>
           <div class="table-row">
-            <div class="table-cell metric-name">市值</div>
+            <div class="table-cell metric-name">Market Cap</div>
             <div v-for="(slot, index) in filledSlots" :key="index" class="table-cell">
               ${{ formatVolume(slot.meme.marketCap) }}
             </div>
           </div>
           <div class="table-row">
-            <div class="table-cell metric-name">热度指数</div>
+            <div class="table-cell metric-name">Heat Index</div>
             <div v-for="(slot, index) in filledSlots" :key="index" class="table-cell">
               <div class="heat-bar">
                 <div class="heat-fill" :style="{ width: `${slot.meme.hotScore}%` }"></div>
@@ -175,7 +175,7 @@
             </div>
           </div>
           <div class="table-row">
-            <div class="table-cell metric-name">社区活跃度</div>
+            <div class="table-cell metric-name">Community Activity</div>
             <div v-for="(slot, index) in filledSlots" :key="index" class="table-cell">
               <div class="stars">
                 <span v-for="i in 5" :key="i" :class="['star', { filled: i <= slot.meme.communityScore }]">★</span>
@@ -183,7 +183,7 @@
             </div>
           </div>
           <div class="table-row">
-            <div class="table-cell metric-name">创建时间</div>
+            <div class="table-cell metric-name">Created At</div>
             <div v-for="(slot, index) in filledSlots" :key="index" class="table-cell">
               {{ formatDate(slot.meme.createdAt) }}
             </div>
@@ -193,7 +193,7 @@
 
       <!-- 雷达图对比 -->
       <div class="radar-section">
-        <h2 class="section-title">🎯 综合评分对比</h2>
+        <h2 class="section-title">🎯 Overall Score Comparison</h2>
         <div class="radar-container">
           <div class="radar-chart">
             <canvas ref="radarChartCanvas"></canvas>
@@ -210,18 +210,18 @@
                 <span class="score-ticker">${{ slot.meme.ticker }}</span>
               </div>
               <div class="score-value">{{ calculateOverallScore(slot.meme) }}</div>
-              <div class="score-label">综合评分</div>
+              <div class="score-label">Overall Score</div>
               <div class="score-breakdown">
                 <div class="breakdown-item">
-                  <span class="breakdown-label">流动性</span>
+                  <span class="breakdown-label">Liquidity</span>
                   <span class="breakdown-value">{{ slot.meme.liquidityScore }}/100</span>
                 </div>
                 <div class="breakdown-item">
-                  <span class="breakdown-label">增长潜力</span>
+                  <span class="breakdown-label">Growth Potential</span>
                   <span class="breakdown-value">{{ slot.meme.growthScore }}/100</span>
                 </div>
                 <div class="breakdown-item">
-                  <span class="breakdown-label">社区热度</span>
+                  <span class="breakdown-label">Community Buzz</span>
                   <span class="breakdown-value">{{ slot.meme.communityScore * 20 }}/100</span>
                 </div>
               </div>
@@ -232,10 +232,10 @@
 
       <!-- AI 分析建议 -->
       <div class="ai-section">
-        <h2 class="section-title">🤖 AI 分析建议</h2>
+        <h2 class="section-title">🤖 AI Insights</h2>
         <div class="ai-content">
           <div class="ai-summary">
-            <p>基于当前数据分析，以下是对所选模因币的综合评估：</p>
+            <p>Based on current data, here is a summary of the selected meme coins:</p>
           </div>
           <div class="ai-cards">
             <div
@@ -265,8 +265,8 @@
     <!-- 空状态 -->
     <div v-else class="empty-state">
       <span class="empty-icon">📊</span>
-      <h3>开始对比分析</h3>
-      <p>选择 2-4 个模因币进行多维度对比</p>
+      <h3>Start Comparing</h3>
+      <p>Select 2–4 meme coins to compare across dimensions</p>
     </div>
   </div>
 </template>
@@ -353,7 +353,7 @@ const searchMemes = async () => {
       }))
     }
   } catch (error) {
-    console.error('搜索模因失败:', error)
+    console.error('Failed to search memes:', error)
     availableMemes.value = []
   } finally {
     searching.value = false
@@ -406,7 +406,7 @@ const fetchCompareData = async () => {
       })
     }
   } catch (error) {
-    console.error('获取对比数据失败:', error)
+    console.error('Failed to fetch comparison data:', error)
   } finally {
     loading.value = false
   }
@@ -449,7 +449,7 @@ const formatVolume = (volume) => {
 
 const formatDate = (dateStr) => {
   if (!dateStr) return '-'
-  return new Date(dateStr).toLocaleDateString('zh-CN')
+  return new Date(dateStr).toLocaleDateString('en-US')
 }
 
 const calculateOverallScore = (meme) => {
@@ -469,37 +469,37 @@ const calculateOverallScore = (meme) => {
 
 const getAIRating = (meme) => {
   const score = calculateOverallScore(meme)
-  if (score >= 80) return { text: '强烈推荐', class: 'excellent' }
-  if (score >= 60) return { text: '值得关注', class: 'good' }
-  if (score >= 40) return { text: '谨慎观望', class: 'neutral' }
-  return { text: '风险较高', class: 'risky' }
+  if (score >= 80) return { text: 'Strong Buy', class: 'excellent' }
+  if (score >= 60) return { text: 'Worth Watching', class: 'good' }
+  if (score >= 40) return { text: 'Cautious', class: 'neutral' }
+  return { text: 'High Risk', class: 'risky' }
 }
 
 const getAIAnalysis = (meme) => {
   if (!meme) return ''
   const score = calculateOverallScore(meme)
   if (score >= 80) {
-    return `${meme.ticker} 展现出强劲的市场表现，交易活跃度高，社区参与度优秀。建议可以考虑适当配置。`
+    return `${meme.ticker} shows strong market performance, high trading activity, and solid community engagement. Consider a measured allocation.`
   }
   if (score >= 60) {
-    return `${meme.ticker} 整体表现良好，但仍有提升空间。建议持续关注其发展动态。`
+    return `${meme.ticker} performs well overall with room to improve. Keep an eye on its progress.`
   }
   if (score >= 40) {
-    return `${meme.ticker} 目前处于调整期，市场情绪一般。建议观望为主，等待更好的入场时机。`
+    return `${meme.ticker} is in a consolidation phase with neutral sentiment. Consider waiting for a better entry.`
   }
-  return `${meme.ticker} 当前风险较高，流动性和社区活跃度都有待提升。建议谨慎对待。`
+  return `${meme.ticker} carries higher risk, with liquidity and community activity needing improvement. Proceed with caution.`
 }
 
 const getAITags = (meme) => {
   if (!meme) return []
   const tags = []
-  if ((meme.priceChange || 0) > 10) tags.push('🚀 强势上涨')
-  if ((meme.priceChange || 0) < -10) tags.push('📉 大幅回调')
-  if ((meme.volume24h || 0) > 100000) tags.push('💎 高交易量')
-  if ((meme.holders || 0) > 1000) tags.push('👥 大社区')
-  if ((meme.hotScore || 0) > 80) tags.push('🔥 热门')
-  if ((meme.communityScore || 0) >= 4) tags.push('⭐ 高评分')
-  if (tags.length === 0) tags.push('📊 稳定发展')
+  if ((meme.priceChange || 0) > 10) tags.push('🚀 Strong Uptrend')
+  if ((meme.priceChange || 0) < -10) tags.push('📉 Sharp Pullback')
+  if ((meme.volume24h || 0) > 100000) tags.push('💎 High Volume')
+  if ((meme.holders || 0) > 1000) tags.push('👥 Large Community')
+  if ((meme.hotScore || 0) > 80) tags.push('🔥 Hot')
+  if ((meme.communityScore || 0) >= 4) tags.push('⭐ High Rating')
+  if (tags.length === 0) tags.push('📊 Stable Growth')
   return tags.slice(0, 3)
 }
 

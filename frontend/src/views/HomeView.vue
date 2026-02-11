@@ -10,12 +10,12 @@ import DexWallet from '../dex_frontend/src/components/Wallet.vue'
 <template>
   <main>
     <header class="content-header">
-      <h1 class="fancy-title">欢迎来到MemeHub🤗🤗🤗</h1>
-      <p class="fancy-subtitle">进行愉快的模因创作和模因币交易吧！</p>
+      <h1 class="fancy-title">Welcome to MemeHub 🤗🤗🤗</h1>
+      <p class="fancy-subtitle">Create memes and trade meme coins with ease!</p>
     </header>
-      <div class="search-wrapper">
+      <!-- <div class="search-wrapper">
         <Search />
-      </div>
+      </div> -->
       <!-- <div class="recommend-section">
         <SmartRecommend />
       </div> -->

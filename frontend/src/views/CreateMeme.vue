@@ -3,26 +3,26 @@
     <main class="container">
 
       <section class="left">
-        <h1>{{ isEditMode ? '编辑模因（重新提交审核）' : '创建新的模因币' }}</h1>
+        <h1>{{ isEditMode ? 'Edit Meme (Resubmit for Review)' : 'Create a New Meme Coin' }}</h1>
         <create-coin 
           ref="createCoinRef"
           @form-data="handleFormData"
           @file-selected="handleFileSelected"
         />
         <div class="notice">
-          {{ isEditMode ? '修改后模因将重新进入待审核状态' : '模因币数据只能在此时添加，创建后无法更改或编辑' }}
+          {{ isEditMode ? 'After editing, the meme will re-enter the review queue' : 'Meme coin data can only be added now and cannot be changed after creation' }}
         </div>
         <primary-button class="create-btn" @click="handleCreateMeme">
-          {{ isEditMode ? '提交修改（仅创建模因）' : '仅创建模因' }}
+          {{ isEditMode ? 'Submit Changes (Create Meme Only)' : 'Create Meme Only' }}
         </primary-button>
         <primary-button class="create-btn" @click="handleCreateMemeCoin">
-          {{ isEditMode ? '提交修改（创建模因与模因币）' : '创建模因与模因币' }}
+          {{ isEditMode ? 'Submit Changes (Create Meme & Coin)' : 'Create Meme & Coin' }}
         </primary-button>
       </section>
 
       <aside class="right">
         <div class="preview">
-          <div class="panel-title">预览</div>
+          <div class="panel-title">Preview</div>
           <div class="preview-box">
             <template v-if="filePreviewUrl">
               <!-- 图片/GIF 预览 (默认) -->
@@ -40,11 +40,11 @@
                 controls
               ></video>
               <div v-else class="unsupported-file">
-                不支持的文件类型
+                Unsupported file type
               </div>
             </template>
             <template v-else>
-              这是对该币种外观的预览
+              This is a preview of the coin appearance
             </template>
           </div>
         </div>
@@ -152,19 +152,19 @@ function handleFileSelected(file) {
 async function handleCreateMeme() {
   // 检查是否登录
   if (!authStore.username) {
-    alert('请先登录')
+    alert('Please log in first')
     router.push('/')
     return
   }
 
   // 编辑模式下，文件是可选的；创建模式下必选
   if (!isEditMode.value && !selectedFile.value) {
-    alert('请先选择文件')
+    alert('Please select a file first')
     return
   }
   
   if (!formData.value?.coinname || !formData.value?.ticker) {
-    alert('请填写币种名称和代号')
+    alert('Please enter the coin name and ticker')
     return
   }
 
@@ -208,13 +208,13 @@ async function handleCreateMeme() {
       const text = await res.text()
       result = text ? JSON.parse(text) : {}
     } catch (parseError) {
-      console.error('JSON解析失败:', parseError)
-      throw new Error(`服务器响应格式错误: ${res.statusText}`)
+      console.error('JSON parse failed:', parseError)
+      throw new Error(`Server response format error: ${res.statusText}`)
     }
     
     if (res.ok || res.status === 201) {
       if (result.code === 0) {
-        alert(isEditMode.value ? '更新模因成功，已提交审核！' : '创建模因成功！')
+        alert(isEditMode.value ? 'Meme updated successfully and submitted for review!' : 'Meme created successfully!')
         
         // 如果是创建，清空表单；更新则不用
         if (!isEditMode.value) {
@@ -239,17 +239,17 @@ async function handleCreateMeme() {
         }
       } else {
         // 处理业务错误
-        const errorMsg = result.message || '操作失败'
+        const errorMsg = result.message || 'Operation failed'
         alert(errorMsg)
       }
     } else {
       // 处理HTTP错误响应
-      const errorMsg = result.message || `操作失败 (${res.status})`
+      const errorMsg = result.message || `Operation failed (${res.status})`
       alert(errorMsg)
     }
   } catch (err) {
-    console.error('操作时发生错误:', err)
-    alert(`错误: ${err.message || '未知错误，请查看控制台'}`)
+    console.error('Error during operation:', err)
+    alert(`Error: ${err.message || 'Unknown error. Please check the console.'}`)
   }
 }
 
@@ -257,19 +257,19 @@ async function handleCreateMeme() {
 async function handleCreateMemeCoin() {
   // 检查是否登录
   if (!authStore.username) {
-    alert('请先登录')
+    alert('Please log in first')
     router.push('/')
     return
   }
 
   // 编辑模式下，文件是可选的；创建模式下必选
   if (!isEditMode.value && !selectedFile.value) {
-    alert('请先选择文件')
+    alert('Please select a file first')
     return
   }
   
   if (!formData.value?.coinname || !formData.value?.ticker) {
-    alert('请填写币种名称和代号')
+    alert('Please enter the coin name and ticker')
     return
   }
 
@@ -315,13 +315,13 @@ async function handleCreateMemeCoin() {
       const text = await res.text()
       result = text ? JSON.parse(text) : {}
     } catch (parseError) {
-      console.error('JSON解析失败:', parseError)
-      throw new Error(`服务器响应格式错误: ${res.statusText}`)
+      console.error('JSON parse failed:', parseError)
+      throw new Error(`Server response format error: ${res.statusText}`)
     }
     
     if (res.ok || res.status === 201) {
       if (result.code === 0) {
-        alert(isEditMode.value ? '更新模因成功，已提交审核！' : '创建模因成功！')
+        alert(isEditMode.value ? 'Meme updated successfully and submitted for review!' : 'Meme created successfully!')
         
         // 如果是创建，清空表单；更新则不用
         if (!isEditMode.value) {
@@ -346,17 +346,17 @@ async function handleCreateMemeCoin() {
         }
       } else {
         // 处理业务错误
-        const errorMsg = result.message || '操作失败'
+        const errorMsg = result.message || 'Operation failed'
         alert(errorMsg)
       }
     } else {
       // 处理HTTP错误响应
-      const errorMsg = result.message || `操作失败 (${res.status})`
+      const errorMsg = result.message || `Operation failed (${res.status})`
       alert(errorMsg)
     }
   } catch (err) {
-    console.error('操作时发生错误:', err)
-    alert(`错误: ${err.message || '未知错误，请查看控制台'}`)
+    console.error('Error during operation:', err)
+    alert(`Error: ${err.message || 'Unknown error. Please check the console.'}`)
   }
 }
 </script>

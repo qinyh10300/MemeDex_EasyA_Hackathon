@@ -109,8 +109,8 @@ watch(
   <main>
     <!-- <TheWelcome /> -->
      <header class="content-header">
-        <h1>搜索结果</h1>
-        <p>发现有趣的模因和创作者</p>
+        <h1>Search Results</h1>
+        <p>Discover memes and creators</p>
       </header>
       <div class="search-wrapper">
         <Search />
@@ -122,7 +122,7 @@ watch(
         <!-- 模因搜索结果 -->
         <div v-if="userResults.length > 0" class="section-divider">
           <div class="divider-line"></div>
-          <div class="divider-text">模因</div>
+          <div class="divider-text">Memes</div>
           <div class="divider-line"></div>
         </div>
 
@@ -131,20 +131,20 @@ watch(
         <!-- 未找到搜索结果时的提示 -->
         <div v-if="searchKeyword && searchResults.length === 0 && userResults.length === 0" class="no-results">
           <div class="no-results-icon">🔍</div>
-          <h2>未找到相关内容</h2>
-          <p>没有找到与 "<strong>{{ searchKeyword }}</strong>" 相关的用户或模因</p>
-          <p class="no-results-suggestion">试试其他关键词或检查拼写</p>
+          <h2>No results found</h2>
+          <p>No users or memes found for "<strong>{{ searchKeyword }}</strong>"</p>
+          <p class="no-results-suggestion">Try another keyword or check spelling</p>
           <button @click="goBack" class="back-button">
-            ← 返回主页
+            ← Back to Home
           </button>
         </div>
 
         <!-- 找到用户但未找到模因时的提示 -->
         <div v-if="searchKeyword && searchResults.length === 0 && userResults.length > 0" class="no-results">
           <div class="no-results-icon">🖼️</div>
-          <h2>未找到相关模因</h2>
-          <p>没有找到与 "<strong>{{ searchKeyword }}</strong>" 相关的模因</p>
-          <p class="no-results-suggestion">试试其他关键词或查看上方找到的用户</p>
+          <h2>No related memes found</h2>
+          <p>No memes found for "<strong>{{ searchKeyword }}</strong>"</p>
+          <p class="no-results-suggestion">Try another keyword or check the users found above</p>
         </div>
       </div>
   </main>

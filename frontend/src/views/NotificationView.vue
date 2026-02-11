@@ -31,7 +31,7 @@
                 {{ formatTime(msg.createdAt) }}
             </div>
             <div class="message-status">
-                {{ msg.isRead ? '已读' : '未读' }}
+                {{ msg.isRead ? 'Read' : 'Unread' }}
             </div>
         </div>
     </div>
@@ -47,9 +47,9 @@ const server_ip = authStore.server_ip // 后端服务器地址
 const user_token = authStore.user_token // user token
 
 const tabs = [
-    { id: 'work', label: '模因作品' },
-    { id: 'interaction', label: '互动' },
-    { id: 'coin', label: '模因币' }
+    { id: 'work', label: 'Meme Posts' },
+    { id: 'interaction', label: 'Interactions' },
+    { id: 'coin', label: 'Meme Coins' }
 ]
 
 const data = ref({
@@ -95,7 +95,7 @@ const fetchNotifications = async () => {
 // 格式化时间
 const formatTime = (isoString) => {
     const date = new Date(isoString)
-    return date.toLocaleString('zh-CN', {
+    return date.toLocaleString('en-US', {
         year: 'numeric',
         month: '2-digit',
         day: '2-digit',

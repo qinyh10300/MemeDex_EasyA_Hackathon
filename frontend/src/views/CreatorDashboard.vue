@@ -1,8 +1,8 @@
 <template>
   <div class="creator-dashboard">
     <header class="page-header">
-      <h1 class="title">📊 创作者数据面板</h1>
-      <p class="subtitle">全面了解你的模因表现和收益情况</p>
+      <h1 class="title">📊 Creator Dashboard</h1>
+      <p class="subtitle">Understand your meme performance and earnings at a glance</p>
     </header>
 
     <!-- 核心指标卡片 -->
@@ -11,32 +11,32 @@
         <div class="metric-icon">💰</div>
         <div class="metric-content">
           <span class="metric-value">${{ formatNumber(totalEarnings) }}</span>
-          <span class="metric-label">总收益 (USDT)</span>
-          <span class="metric-change positive">+{{ earningsChange }}% 本月</span>
+          <span class="metric-label">Total Earnings (USDT)</span>
+          <span class="metric-change positive">+{{ earningsChange }}% this month</span>
         </div>
       </div>
       <div class="metric-card">
         <div class="metric-icon">📈</div>
         <div class="metric-content">
           <span class="metric-value">{{ totalMemes }}</span>
-          <span class="metric-label">创建的模因</span>
-          <span class="metric-change">{{ approvedMemes }} 已通过审核</span>
+          <span class="metric-label">Memes Created</span>
+          <span class="metric-change">{{ approvedMemes }} approved</span>
         </div>
       </div>
       <div class="metric-card">
         <div class="metric-icon">👥</div>
         <div class="metric-content">
           <span class="metric-value">{{ formatNumber(totalHolders) }}</span>
-          <span class="metric-label">总持有人数</span>
-          <span class="metric-change positive">+{{ holdersChange }}% 本周</span>
+          <span class="metric-label">Total Holders</span>
+          <span class="metric-change positive">+{{ holdersChange }}% this week</span>
         </div>
       </div>
       <div class="metric-card">
         <div class="metric-icon">💎</div>
         <div class="metric-content">
           <span class="metric-value">${{ formatNumber(totalVolume) }}</span>
-          <span class="metric-label">总交易量</span>
-          <span class="metric-change">过去30天</span>
+          <span class="metric-label">Total Volume</span>
+          <span class="metric-change">Past 30 days</span>
         </div>
       </div>
     </div>
@@ -44,7 +44,7 @@
     <!-- 收益图表 -->
     <div class="chart-section">
       <div class="section-header">
-        <h2 class="section-title">💵 收益趋势</h2>
+        <h2 class="section-title">💵 Earnings Trend</h2>
         <div class="time-selector">
           <button
             v-for="range in timeRanges"
@@ -71,17 +71,17 @@
         </div>
         <div class="chart-summary">
           <div class="summary-item">
-            <span class="summary-label">本期收益</span>
+            <span class="summary-label">Period Earnings</span>
             <span class="summary-value positive">${{ formatNumber(periodEarnings) }}</span>
           </div>
           <div class="summary-item">
-            <span class="summary-label">环比变化</span>
+            <span class="summary-label">Period Change</span>
             <span class="summary-value" :class="periodChange >= 0 ? 'positive' : 'negative'">
               {{ periodChange >= 0 ? '+' : '' }}{{ periodChange }}%
             </span>
           </div>
           <div class="summary-item">
-            <span class="summary-label">日均收益</span>
+            <span class="summary-label">Daily Average</span>
             <span class="summary-value">${{ formatNumber(dailyAverage) }}</span>
           </div>
         </div>
@@ -91,12 +91,12 @@
     <!-- 模因表现排名 -->
     <div class="memes-section">
       <div class="section-header">
-        <h2 class="section-title">🏆 我的模因表现</h2>
+        <h2 class="section-title">🏆 My Meme Performance</h2>
         <select v-model="memeSort" class="sort-select">
-          <option value="earnings">按收益排序</option>
-          <option value="volume">按交易量排序</option>
-          <option value="holders">按持有人数排序</option>
-          <option value="price">按价格排序</option>
+          <option value="earnings">Sort by earnings</option>
+          <option value="volume">Sort by volume</option>
+          <option value="holders">Sort by holders</option>
+          <option value="price">Sort by price</option>
         </select>
       </div>
       <div class="memes-list">
@@ -110,28 +110,28 @@
           <div class="meme-stats">
             <div class="stat-col">
               <span class="stat-value">${{ formatPrice(meme.price) }}</span>
-              <span class="stat-label">当前价格</span>
+              <span class="stat-label">Current Price</span>
             </div>
             <div class="stat-col">
               <span class="stat-value" :class="meme.priceChange >= 0 ? 'positive' : 'negative'">
                 {{ meme.priceChange >= 0 ? '+' : '' }}{{ meme.priceChange }}%
               </span>
-              <span class="stat-label">24h涨跌</span>
+              <span class="stat-label">24h Change</span>
             </div>
             <div class="stat-col">
               <span class="stat-value">{{ meme.holders }}</span>
-              <span class="stat-label">持有人</span>
+              <span class="stat-label">Holders</span>
             </div>
             <div class="stat-col">
               <span class="stat-value">${{ formatNumber(meme.volume) }}</span>
-              <span class="stat-label">交易量</span>
+              <span class="stat-label">Volume</span>
             </div>
             <div class="stat-col highlight">
               <span class="stat-value">${{ formatNumber(meme.earnings) }}</span>
-              <span class="stat-label">我的收益</span>
+              <span class="stat-label">My Earnings</span>
             </div>
           </div>
-          <button class="detail-btn" @click="goToMeme(meme.id)">查看详情</button>
+          <button class="detail-btn" @click="goToMeme(meme.id)">View Details</button>
         </div>
       </div>
     </div>
@@ -139,23 +139,23 @@
     <!-- 粉丝分析 -->
     <div class="fans-section">
       <div class="section-header">
-        <h2 class="section-title">👥 粉丝分析</h2>
+        <h2 class="section-title">👥 Follower Analytics</h2>
       </div>
       <div class="fans-grid">
         <div class="fans-card">
-          <h3 class="card-title">粉丝增长</h3>
+          <h3 class="card-title">Follower Growth</h3>
           <div class="fans-stats">
             <div class="fans-stat">
               <span class="fans-value">{{ totalFollowers }}</span>
-              <span class="fans-label">总粉丝</span>
+              <span class="fans-label">Total Followers</span>
             </div>
             <div class="fans-stat">
               <span class="fans-value positive">+{{ newFollowers }}</span>
-              <span class="fans-label">本周新增</span>
+              <span class="fans-label">New This Week</span>
             </div>
             <div class="fans-stat">
               <span class="fans-value negative">-{{ unfollowers }}</span>
-              <span class="fans-label">本周取关</span>
+              <span class="fans-label">Unfollows This Week</span>
             </div>
           </div>
           <div class="fans-chart">
@@ -171,24 +171,24 @@
           </div>
         </div>
         <div class="fans-card">
-          <h3 class="card-title">粉丝活跃度</h3>
+          <h3 class="card-title">Follower Activity</h3>
           <div class="activity-list">
             <div class="activity-item">
-              <span class="activity-label">高活跃粉丝</span>
+              <span class="activity-label">Highly Active</span>
               <div class="activity-bar">
                 <div class="activity-fill high" :style="{ width: `${highActivity}%` }"></div>
               </div>
               <span class="activity-value">{{ highActivity }}%</span>
             </div>
             <div class="activity-item">
-              <span class="activity-label">中活跃粉丝</span>
+              <span class="activity-label">Moderately Active</span>
               <div class="activity-bar">
                 <div class="activity-fill medium" :style="{ width: `${mediumActivity}%` }"></div>
               </div>
               <span class="activity-value">{{ mediumActivity }}%</span>
             </div>
             <div class="activity-item">
-              <span class="activity-label">低活跃粉丝</span>
+              <span class="activity-label">Low Activity</span>
               <div class="activity-bar">
                 <div class="activity-fill low" :style="{ width: `${lowActivity}%` }"></div>
               </div>
@@ -197,27 +197,27 @@
           </div>
         </div>
         <div class="fans-card">
-          <h3 class="card-title">粉丝互动</h3>
+          <h3 class="card-title">Follower Engagement</h3>
           <div class="interaction-stats">
             <div class="interaction-item">
               <span class="interaction-icon">❤️</span>
               <span class="interaction-value">{{ totalLikes }}</span>
-              <span class="interaction-label">获赞数</span>
+              <span class="interaction-label">Likes</span>
             </div>
             <div class="interaction-item">
               <span class="interaction-icon">💬</span>
               <span class="interaction-value">{{ totalComments }}</span>
-              <span class="interaction-label">评论数</span>
+              <span class="interaction-label">Comments</span>
             </div>
             <div class="interaction-item">
               <span class="interaction-icon">⭐</span>
               <span class="interaction-value">{{ totalFavorites }}</span>
-              <span class="interaction-label">收藏数</span>
+              <span class="interaction-label">Favorites</span>
             </div>
             <div class="interaction-item">
               <span class="interaction-icon">🔄</span>
               <span class="interaction-value">{{ totalShares }}</span>
-              <span class="interaction-label">分享数</span>
+              <span class="interaction-label">Shares</span>
             </div>
           </div>
         </div>
@@ -227,16 +227,16 @@
     <!-- 收益明细 -->
     <div class="earnings-section">
       <div class="section-header">
-        <h2 class="section-title">📝 收益明细</h2>
-        <button class="export-btn">导出报表</button>
+        <h2 class="section-title">📝 Earnings Details</h2>
+        <button class="export-btn">Export Report</button>
       </div>
       <div class="earnings-table">
         <div class="table-header">
-          <span class="col">时间</span>
-          <span class="col">类型</span>
-          <span class="col">模因</span>
-          <span class="col">金额</span>
-          <span class="col">状态</span>
+          <span class="col">Time</span>
+          <span class="col">Type</span>
+          <span class="col">Meme</span>
+          <span class="col">Amount</span>
+          <span class="col">Status</span>
         </div>
         <div v-for="record in earningsRecords" :key="record.id" class="table-row">
           <span class="col">{{ formatDate(record.time) }}</span>
@@ -276,10 +276,10 @@ const totalVolume = ref(85600)
 // 时间选择
 const selectedTimeRange = ref('30d')
 const timeRanges = [
-  { value: '7d', label: '7天' },
-  { value: '30d', label: '30天' },
-  { value: '90d', label: '90天' },
-  { value: 'all', label: '全部' }
+  { value: '7d', label: '7d' },
+  { value: '30d', label: '30d' },
+  { value: '90d', label: '90d' },
+  { value: 'all', label: 'All' }
 ]
 
 // 收益数据
@@ -289,13 +289,13 @@ const dailyAverage = ref(108.36)
 
 // 模拟图表数据
 const mockChartData = ref([
-  { label: '周一', value: 45 },
-  { label: '周二', value: 62 },
-  { label: '周三', value: 38 },
-  { label: '周四', value: 75 },
-  { label: '周五', value: 88 },
-  { label: '周六', value: 52 },
-  { label: '周日', value: 68 }
+  { label: 'Mon', value: 45 },
+  { label: 'Tue', value: 62 },
+  { label: 'Wed', value: 38 },
+  { label: 'Thu', value: 75 },
+  { label: 'Fri', value: 88 },
+  { label: 'Sat', value: 52 },
+  { label: 'Sun', value: 68 }
 ])
 
 // 模因数据
@@ -315,13 +315,13 @@ const totalFavorites = ref(3200)
 const totalShares = ref(680)
 
 const fansGrowthData = ref([
-  { label: '周一', value: 15 },
-  { label: '周二', value: 22 },
-  { label: '周三', value: -5 },
-  { label: '周四', value: 18 },
-  { label: '周五', value: 32 },
-  { label: '周六', value: 28 },
-  { label: '周日', value: 15 }
+  { label: 'Mon', value: 15 },
+  { label: 'Tue', value: 22 },
+  { label: 'Wed', value: -5 },
+  { label: 'Thu', value: 18 },
+  { label: 'Fri', value: 32 },
+  { label: 'Sat', value: 28 },
+  { label: 'Sun', value: 15 }
 ])
 
 // 收益记录
@@ -358,7 +358,7 @@ const formatPrice = (price) => {
 }
 
 const formatDate = (dateStr) => {
-  return new Date(dateStr).toLocaleDateString('zh-CN', {
+  return new Date(dateStr).toLocaleDateString('en-US', {
     month: 'numeric',
     day: 'numeric',
     hour: '2-digit',
@@ -368,19 +368,19 @@ const formatDate = (dateStr) => {
 
 const getTypeText = (type) => {
   const map = {
-    trade: '交易分成',
-    creation: '创作奖励',
-    airdrop: '空投',
-    referral: '推荐奖励'
+    trade: 'Trading Revenue Share',
+    creation: 'Creation Reward',
+    airdrop: 'Airdrop',
+    referral: 'Referral Bonus'
   }
   return map[type] || type
 }
 
 const getStatusText = (status) => {
   const map = {
-    completed: '已到账',
-    pending: '处理中',
-    failed: '失败'
+    completed: 'Completed',
+    pending: 'Processing',
+    failed: 'Failed'
   }
   return map[status] || status
 }
